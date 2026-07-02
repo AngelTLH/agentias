@@ -6,7 +6,7 @@
 
 **Agentias** es un framework de andamiaje (*scaffolding*) y una interfaz interactiva diseñada para crear proyectos optimizados para ser trabajados codo con codo con Inteligencias Artificiales y Agentes Autónomos. A través de perfiles preconfigurados, reglas estrictas y plantillas de alta calidad (LaTeX, R/Shiny, Dash, React, Páginas Web de Ventas), **Agentias** garantiza que cualquier IA que cargue el entorno trabaje con el máximo nivel de rigurosidad, orden y profesionalidad.
 
-Desarrollado con pasión por **Angel Llanos Herrera**.
+Desarrollado por **Angel Llanos Herrera**.
 
 ---
 
