@@ -1,0 +1,135 @@
+% Plantilla de Presentación Beamer Genérica
+\documentclass[aspectratio=169, xcolor={dvipsnames}, 8pt, spanish]{beamer}
+
+\usepackage{booktabs}   
+\usepackage{multirow}   
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{caption}    
+\usepackage{array}      
+\usepackage{tabularx}   
+\usepackage{siunitx}    
+\usepackage{hyperref}
+
+% --- AJUSTES Y CONFIGURACIÓN ---
+% Si el archivo customizacoes.tex existe, se incluye.
+% De lo contrario, definimos configuraciones por defecto.
+\input{customizacoes}
+
+% Información del Documento Genérico
+\title[[Título Corto]]{[Título Completo de la Presentación]}
+\subtitle{[Subtítulo de la Presentación / Proyecto]}
+\author[[Autor Corto]]{[Nombre Completo del Expositor]}
+\institute[[Siglas Institución]]{[Nombre de la Institución / Universidad]}
+\date{\today}
+
+% Nombre del Docente / Supervisor
+\newcommand{\advisorname}{\textbf{Supervisor / Evaluador:} [Nombre del Evaluador]}
+
+\begin{document}
+
+% Slide 1: Portada
+\begin{frame}
+    \titlepage
+\end{frame}
+
+% Slide 2: Introducción y Contexto
+\begin{frame}{Introducción y Justificación}
+
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.32\textwidth}
+\begin{block}{1. Contexto}
+    Presentación breve del contexto del problema o del área de estudio. Justificar la relevancia del proyecto.
+\end{block}
+\end{column}
+\begin{column}{0.32\textwidth}
+\begin{block}{2. Motivación}
+    ¿Por qué es necesario este estudio? Identificar la brecha de conocimiento o el problema práctico a resolver.
+\end{block}
+\end{column}
+\begin{column}{0.32\textwidth}
+\begin{block}{3. Enfoque}
+    Resumen breve de la metodología o el enfoque analítico propuesto para dar respuesta al problema.
+\end{block}
+\end{column}
+\end{columns}
+
+\begin{block}{Objetivo General}
+    Definir el objetivo central del proyecto de manera clara y concisa en este bloque destacado.
+\end{block}
+
+\end{frame}
+
+% Slide 3: Datos e Instrumentos
+\begin{frame}{Metodología y Datos Utilizados}
+
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.48\textwidth}
+\begin{block}{Descripción de la Muestra}
+    \begin{itemize}
+        \item \textbf{Tamaño Muestral ($N$):} [Número de observaciones]
+        \item \textbf{Criterios de Inclusión:} [Detallar brevemente]
+        \item \textbf{Variables de Control:} [Detallar brevemente]
+    \end{itemize}
+\end{block}
+\end{column}
+\begin{column}{0.48\textwidth}
+\begin{block}{Diccionario Resumido}
+    \begin{table}[]
+    \scriptsize
+    \begin{tabularx}{\textwidth}{lX}
+    \toprule
+    \textbf{Variable} & \textbf{Descripción / Rol} \\
+    \midrule
+    \texttt{Var\_Respuesta} & Respuesta primaria de interés. \\
+    \texttt{Var\_Indep\_1} & Primer predictor o covariable. \\
+    \texttt{Var\_Indep\_2} & Segundo predictor o factor. \\
+    \texttt{Var\_Ajuste} & Variable para control de sesgo. \\
+    \bottomrule
+    \end{tabularx}
+    \caption{Definición de variables clave.}
+    \end{table}
+\end{block}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+% Slide 4: Resultados
+\begin{frame}{Resultados Principales}
+
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.58\textwidth}
+\begin{block}{Análisis y Modelamiento}
+    Explicación detallada de los resultados del modelo. 
+    \begin{itemize}
+        \item Los coeficientes muestran una relación directa significativa ($p < 0.05$).
+        \item El poder explicativo del modelo de regresión es adecuado.
+    \end{itemize}
+\end{block}
+\end{column}
+\begin{column}{0.38\textwidth}
+\begin{block}{Representación Visual}
+    \begin{center}
+        \color{gray}
+        [Espacio reservado para Gráficos de Resultados]
+    \end{center}
+\end{block}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+% Slide 5: Conclusiones
+\begin{frame}{Conclusiones y Recomendaciones}
+
+\begin{itemize}
+    \item \textbf{Resultado Clave 1:} Resumen del hallazgo más importante del estudio.
+    \item \textbf{Resultado Clave 2:} Conclusión secundaria relevante.
+    \item \textbf{Implicancia:} ¿Cómo impacta esto en la práctica o teoría?
+    \item \textbf{Líneas Futuras:} Próximos pasos sugeridos para expandir el análisis.
+\end{itemize}
+
+\end{frame}
+
+\end{document}

@@ -1,0 +1,207 @@
+\documentclass[10pt,a4paper]{article}
+
+% --- PAQUETES ---
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, es-tabla]{babel}
+\usepackage[margin=2.8cm, top=3cm, bottom=3cm, headheight=24pt]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{amsmath, amssymb}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{lastpage}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{hyperref}
+\hbadness=10000
+
+% --- CONFIGURACIÓN DE COLORES NEUTROS ---
+\definecolor{PrimaryBlue}{RGB}{20, 60, 110}      % Azul oscuro corporativo neutro
+\definecolor{LightBlue}{RGB}{240, 245, 252}      % Azul claro para tablas
+\definecolor{WarningRed}{RGB}{170, 45, 45}       % Rojo oscuro para advertencias
+\definecolor{LightRed}{RGB}{253, 240, 240}       % Rojo claro para fondo de nota
+\definecolor{InfoGold}{RGB}{170, 130, 30}        % Dorado/Amarillo oscuro
+\definecolor{LightGold}{RGB}{255, 253, 240}      % Amarillo claro para notas de formato
+
+\definecolor{CodeBack}{RGB}{247, 247, 249}
+\definecolor{CodeComment}{RGB}{90, 115, 90}
+\definecolor{CodeKeyword}{RGB}{20, 60, 110}
+\definecolor{CodeString}{RGB}{170, 45, 45}
+
+% --- CONFIGURACIÓN DE CÓDIGO ---
+\renewcommand{\lstlistingname}{Código}
+\renewcommand{\lstlistlistingname}{Índice de códigos}
+
+\lstdefinestyle{CustomStyle}{
+    language=R,
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{CodeKeyword}\bfseries,
+    commentstyle=\color{CodeComment}\itshape,
+    stringstyle=\color{CodeString},
+    backgroundcolor=\color{CodeBack},
+    frame=single,
+    rulecolor=\color{PrimaryBlue},
+    breaklines=true,
+    showstringspaces=false,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    tabsize=2,
+    captionpos=b
+}
+
+% --- CONFIGURACIÓN DE ENCABEZADOS Y PIES DE PÁGINA ---
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{PrimaryBlue}{\textbf{[Nombre de la Institución]}}}
+\fancyhead[R]{\textcolor{PrimaryBlue}{[Documento / Informe Técnico]}}
+\cfoot{\small Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{PrimaryBlue}\leaders\hrule height \headrulewidth\hfill}}
+
+% --- CONFIGURACIÓN DE SECCIONES ---
+\titleformat{\section}{\color{PrimaryBlue}\Large\bfseries}{\thesection.}{0.5em}{}
+\titleformat{\subsection}{\color{PrimaryBlue}\large\bfseries}{\thesubsection.}{0.5em}{}
+
+% --- CONFIGURACIÓN DE LISTAS ---
+\setlist[itemize]{label=\textcolor{black}{\small$\blacksquare$}}
+\setlist[enumerate]{leftmargin=*}
+
+% --- INICIO DEL DOCUMENTO ---
+\begin{document}
+\hypersetup{pageanchor=false}
+
+% --- PÁGINA 1: PORTADA ---
+\thispagestyle{empty} 
+
+% Banner superior
+\noindent
+\begin{tcolorbox}[colback=PrimaryBlue, colframe=PrimaryBlue, sharp corners, boxsep=3mm, halign=center]
+    \color{white}
+    \Large\textbf{[Nombre de la Institución / Facultad]} \\[1.5mm]
+    \small [Departamento / Escuela Académica o Área Corporativa] \\
+    \small [Asignatura / Proyecto de Referencia]
+\end{tcolorbox}
+
+\vspace{1.5cm}
+
+% Título Central
+\begin{center}
+    \textcolor{PrimaryBlue}{\Huge \textsc{[Título del Informe / Proyecto]}} \\[0.5cm]
+    \Large \textbf{[Subtítulo o Tema Principal del Análisis]} \\[0.2cm]
+    \normalsize [Descripción resumida del contenido del documento] \\[1.5cm]
+    
+    \noindent\makebox[\textwidth]{\textcolor{PrimaryBlue}{\rule{0.6\textwidth}{1.5pt}}}
+\end{center}
+
+\vspace{2.5cm}
+
+% Identificación
+\begin{flushright}
+    \begin{minipage}{0.5\textwidth}
+        \normalsize
+        \textbf{Autor(es):} \\
+        [Nombre del Autor 1] \\
+        [Nombre del Autor 2] \\[0.4cm]
+        \textbf{Docente / Supervisor:} \\
+        [Nombre del Docente / Evaluador] \\[0.4cm]
+        \textbf{Fecha:} \\
+        \today
+    \end{minipage}
+\end{flushright}
+
+\clearpage
+\hypersetup{pageanchor=true}
+
+% --- PÁGINA 2: ÍNDICES ---
+\tableofcontents
+\newpage
+
+% --- CONTENIDO ---
+\section{Introducción}
+Este documento sirve como plantilla formal en \LaTeX\ para informes técnicos, científicos o académicos. En esta sección se presenta la justificación de la investigación, el planteamiento del problema y la definición de objetivos.
+
+El objetivo principal de este informe se establece a continuación:
+\begin{center}
+    \textit{\textbf{[Definir aquí el objetivo principal del análisis en formato destacado y negrita]}}
+\end{center}
+
+\section{Metodología y Datos}
+En esta sección se describe la muestra analizada, la naturaleza de las variables y el tratamiento metodológico aplicado.
+
+\subsection{Estructura de la Base de Datos}
+A continuación se presenta un cuadro descriptivo de las variables analizadas como ejemplo de maquetación de tablas usando el entorno \texttt{tabularx}:
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l c X}
+\toprule[1.5pt]
+\rowcolor{PrimaryBlue} \textcolor{white}{\textbf{Variable}} & \textcolor{white}{\textbf{Tipo}} & \textcolor{white}{\textbf{Descripción y Codificación}} \\
+\midrule
+\texttt{Variable\_1} & Numérica & Variable de respuesta continua que representa [Unidad de Medida]. \\
+\rowcolor{LightBlue}
+\texttt{Variable\_2} & Categórica & Variable binaria de clasificación (0 = Control, 1 = Tratamiento). \\
+\texttt{Variable\_3} & Numérica & Explicativa o covariable independiente (edad, meses, etc.). \\
+\rowcolor{LightBlue}
+\texttt{Variable\_4} & Categórica & Variable multinivel representando estados o categorías. \\
+\bottomrule[1.5pt]
+\end{tabularx}
+\caption{Diccionario de variables e identificación del tipo de dato.}
+\label{tab:variables}
+\end{table}
+
+\subsection{Modelamiento Matemático}
+Es posible incorporar ecuaciones matemáticas avanzadas. Por ejemplo, un modelo matemático lineal se define mediante la ecuación:
+\begin{equation}
+    Y_i = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \varepsilon_i
+\end{equation}
+Donde $Y_i$ es la respuesta, $X_{ji}$ son los predictores y $\varepsilon_i$ representa el término de error aleatorio.
+
+\section{Resultados y Diagnóstico}
+En esta sección se exponen los hallazgos principales y la verificación de supuestos estadísticos correspondientes.
+
+\subsection{Visualización de Datos}
+Las figuras deben ser centradas e incluir su respectivo identificador y leyenda explicativa:
+
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.6\textwidth]{imagenes/grafico_ejemplo.png}
+    \begin{tcolorbox}[colback=white, colframe=PrimaryBlue, width=0.6\textwidth, halign=center, valign=center, height=4cm]
+        \textcolor{PrimaryBlue}{\textbf{[Marcador de Posición para Gráfico / Imagen]}} \\
+        (Ej: Boxplot de distribución o Matriz de correlación)
+    \end{tcolorbox}
+    \caption{Ejemplo de gráfico o visualización de datos.}
+    \label{fig:grafico1}
+\end{figure}
+
+\section{Conclusiones}
+Resumen de los principales resultados, aportes y posibles líneas de trabajo futuras.
+
+\newpage
+\section{Anexo: Código de Implementación}
+Sección destinada a la presentación del código fuente del análisis (R, Python, etc.) debidamente comentado y estructurado:
+
+\begin{lstlisting}[style=CustomStyle, caption={Script de ejemplo para análisis descriptivo genérico.}]
+# Carga de librerías básicas
+library(ggplot2)
+
+# Análisis descriptivo exploratorio
+data(iris)
+summary(iris)
+
+# Gráfico de ejemplo
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+  geom_point(size = 3) +
+  theme_minimal() +
+  labs(title = "Análisis de Longitud y Ancho de Sépalo",
+       x = "Longitud de Sépalo",
+       y = "Ancho de Sépalo")
+\end{lstlisting}
+
+\end{document}

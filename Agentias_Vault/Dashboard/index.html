@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurador del Sistema de Agentes e IA</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="background-decor">
+        <div class="glow-sphere sphere-1"></div>
+        <div class="glow-sphere sphere-2"></div>
+    </div>
+
+    <main class="dashboard-container">
+        <header class="dashboard-header animate-fade-in">
+            <div class="theme-selector-container">
+                <button type="button" id="btn-theme-light" class="theme-toggle-btn active">Cactus Claro</button>
+                <button type="button" id="btn-theme-dark" class="theme-toggle-btn">Cactus Oscuro</button>
+            </div>
+            <div class="dashboard-logo-container">
+                <img src="logo.png" alt="Agentias Logo" class="dashboard-logo">
+            </div>
+            <h1>Configuración e Inicialización de Proyectos</h1>
+            <p>Diseña tu estructura de agentes, habilidades y expertises dinámicas en un solo clic.</p>
+        </header>
+
+        <div class="grid-layout">
+            <!-- Columna Izquierda: Formulario -->
+            <section class="card glass-card form-section animate-slide-up">
+                <h2 class="section-title">Parámetros del Proyecto</h2>
+                <form id="project-form">
+
+                    <!-- Fila 1: Nombre y Ruta -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="project-name">Nombre del Proyecto</label>
+                            <input type="text" id="project-name" placeholder="Ej: Proyecto_Estadistica" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="project-path">Ruta de Destino (Absoluta)</label>
+                            <div class="input-with-btn">
+                                <input type="text" id="project-path" placeholder="Ej: C:\Users\Usuario\Desktop"
+                                    required>
+                                <button type="button" id="btn-select-path" class="btn-input-action">Buscar...</button>
+                            </div>
+                            <span class="input-helper-text" style="font-size: 0.75rem; color: var(--text-secondary); display: block; margin-top: 0.35rem;">
+                                * Nota: Si el buscador no aparece en primer plano, revisa si quedó minimizado en tu barra de tareas.
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Fila 2: Área de Expertiz Dinámica -->
+                    <div class="form-group">
+                        <label for="area-name">Área de Expertiz Especializada (Opcional)</label>
+                        <input type="text" id="area-name"
+                            placeholder="Ej: Ciberseguridad, Bioquímica, Modelos Estadísticos Aplicados">
+                    </div>
+                    <div class="form-group">
+                        <label for="area-details">Detalles, Directrices y Manuales de Referencia del Área</label>
+                        <textarea id="area-details" rows="3"
+                            placeholder="Detalla aquí las reglas del área, manuales, normativas o pautas clave que deba seguir la IA para este proyecto..."></textarea>
+                    </div>
+
+                    <!-- Fila 3: Configuración de Programación -->
+                    <div class="form-group">
+                        <label
+                            style="font-size: 0.95rem; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-secondary);">Lenguajes
+                            de Programación (Elige de 0 a 2)</label>
+                        <div class="languages-selection-container">
+                            <!-- Python -->
+                            <div class="lang-selection-item">
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="lang-python" class="lang-checkbox" value="Python">
+                                    <label for="lang-python">
+                                        <strong>Python</strong>
+                                        <span>Habilitar lenguaje</span>
+                                    </label>
+                                </div>
+                                <div class="lang-format-group" id="format-group-python"
+                                    style="display: none; margin-top: 0.5rem;">
+                                    <label for="file-format-python"
+                                        style="font-size: 0.75rem; margin-bottom: 0.25rem; font-weight: 600;">Formato de
+                                        Archivo</label>
+                                    <select id="file-format-python" class="lang-format-select">
+                                        <option value=".ipynb">Jupyter Notebook (.ipynb)</option>
+                                        <option value=".py">Script Puro (.py)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- R -->
+                            <div class="lang-selection-item">
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="lang-r" class="lang-checkbox" value="R">
+                                    <label for="lang-r">
+                                        <strong>R</strong>
+                                        <span>Habilitar lenguaje</span>
+                                    </label>
+                                </div>
+                                <div class="lang-format-group" id="format-group-r"
+                                    style="display: none; margin-top: 0.5rem;">
+                                    <label for="file-format-r"
+                                        style="font-size: 0.75rem; margin-bottom: 0.25rem; font-weight: 600;">Formato de
+                                        Archivo</label>
+                                    <select id="file-format-r" class="lang-format-select">
+                                        <option value=".Rmd">RMarkdown (.Rmd)</option>
+                                        <option value=".R">Script Puro (.R)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Java -->
+                            <div class="lang-selection-item">
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="lang-java" class="lang-checkbox" value="Java">
+                                    <label for="lang-java">
+                                        <strong>Java</strong>
+                                        <span>Habilitar lenguaje</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="coding-details">Detalles Adicionales de Código</label>
+                        <textarea id="coding-details" rows="2"
+                            placeholder="Ej: Usar únicamente tidyverse, estructurar el código en funciones con una llamada principal main, etc."></textarea>
+                    </div>
+
+
+                    <!-- Lógica de Dashboard Opcional -->
+                    <div class="conditional-section">
+                        <div class="checkbox-wrapper simple-check">
+                            <input type="checkbox" id="dashboard-active">
+                            <label for="dashboard-active"><strong>Habilitar Dashboard de Visualización</strong></label>
+                        </div>
+                        <div id="dashboard-fields" class="conditional-fields">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="dashboard-type">Tecnología de Dashboard</label>
+                                    <select id="dashboard-type">
+                                        <!-- Se rellenará dinámicamente según el lenguaje -->
+                                        <option value="Dash">Dash (Python)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fila 4: Selección de Agentes por Categorías -->
+                    <div class="form-group agents-selection-container">
+                        <label
+                            style="font-size: 1.1rem; margin-bottom: 1rem; border-bottom: 1.5px dashed var(--border-color); padding-bottom: 0.5rem; color: var(--primary-color);">Agentes
+                            Habilitados por Área</label>
+
+                        <!-- Categoría 1: Datos y Modelamiento -->
+                        <div class="agent-category-group">
+                            <h4 class="category-group-title">Datos y Modelamiento</h4>
+                            <div class="checkbox-grid">
+                                <!-- Estadístico Base -->
+                                <div class="checkbox-wrapper active-locked">
+                                    <input type="checkbox" id="agent-stat" checked disabled>
+                                    <label for="agent-stat">
+                                        <strong>Estadístico Base</strong>
+                                        <span>Análisis inferencial y EDA</span>
+                                    </label>
+                                </div>
+                                <!-- Ingeniería de Datos -->
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="agent-data-eng">
+                                    <label for="agent-data-eng">
+                                        <strong>Ingeniería de Datos</strong>
+                                        <span>ETL, limpieza y APIs de datos</span>
+                                    </label>
+                                </div>
+                                <!-- Agente de Modelado -->
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="agent-model">
+                                    <label for="agent-model">
+                                        <strong>Agente de Modelado</strong>
+                                        <span>Modelamiento predictivo y de clasificación</span>
+                                    </label>
+                                </div>
+                                <!-- Agente de Simulación -->
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="agent-simulation">
+                                    <label for="agent-simulation">
+                                        <strong>Agente de Simulación</strong>
+                                        <span>Análisis estocástico y Monte Carlo</span>
+                                    </label>
+                                </div>
+                                <!-- Privacidad de Datos -->
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="agent-privacy">
+                                    <label for="agent-privacy">
+                                        <strong>Privacidad de Datos</strong>
+                                        <span>Gobernanza ética y anonimización</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Categoría 2: Desarrollo y Calidad -->
+                        <div class="agent-category-group" style="margin-top: 1.5rem;">
+                            <h4 class="category-group-title">Desarrollo y Calidad</h4>
+                            <div class="checkbox-grid">
+                                <!-- Programador Frontend -->
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="agent-web">
+                                    <label for="agent-web">
+                                        <strong>Programador Frontend</strong>
+                                        <span>Interfaces web y página de ventas</span>
+                                    </label>
+                                </div>
+                                <!-- QA y Revisor de Código -->
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="agent-qa">
+                                    <label for="agent-qa">
+                                        <strong>QA y Revisor de Código</strong>
+                                        <span>Validación de sintaxis, PEP8 y pruebas</span>
+                                    </label>
+                                </div>
+                                <!-- Agente Especialista en IA -->
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="agent-ia">
+                                    <label for="agent-ia">
+                                        <strong>Agente Especialista en IA</strong>
+                                        <span>Deep Learning, NLP e integración de APIs</span>
+                                    </label>
+                                </div>
+                                <!-- Agente Arquitecto de Agentes -->
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="agent-architect">
+                                    <label for="agent-architect">
+                                        <strong>Arquitecto de Agentes</strong>
+                                        <span>Orquestación de loops de agentes (ReAct, Plan-and-Execute)</span>
+                                    </label>
+                                </div>
+                                <!-- Agente de Git y CI/CD -->
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="agent-git-cicd">
+                                    <label for="agent-git-cicd">
+                                        <strong>Agente de Git y CI/CD</strong>
+                                        <span>Control de versiones y DevOps</span>
+                                    </label>
+                                </div>
+                                <!-- Agente de Sostenibilidad -->
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="agent-sustainability">
+                                    <label for="agent-sustainability">
+                                        <strong>Agente de Sostenibilidad</strong>
+                                        <span>Eficiencia de algoritmos y ODS</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Categoría 3: Academia, Redacción y Diseño -->
+                        <div class="agent-category-group" style="margin-top: 1.5rem;">
+                            <h4 class="category-group-title">Academia, Redacción y Diseño</h4>
+                            <div class="checkbox-grid">
+                                <!-- Redactor de LaTeX -->
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="agent-latex">
+                                    <label for="agent-latex">
+                                        <strong>Redactor de LaTeX</strong>
+                                        <span>Informes y presentaciones en LaTeX</span>
+                                    </label>
+                                </div>
+                                <!-- Investigador de Literatura -->
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="agent-research">
+                                    <label for="agent-research">
+                                        <strong>Investigador de Literatura</strong>
+                                        <span>Búsqueda, curaduría y citas de PDFs</span>
+                                    </label>
+                                </div>
+                                <!-- Diseñador Gráfico -->
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="agent-design">
+                                    <label for="agent-design">
+                                        <strong>Diseñador Gráfico</strong>
+                                        <span>Identidad visual, branding y recursos</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <!-- Lógica Condicional: Selección de LaTeX -->
+                    <div id="latex-section" class="conditional-section">
+                        <label>Plantillas LaTeX a Copiar</label>
+                        <div class="checkbox-grid">
+                            <div class="checkbox-wrapper simple-check">
+                                <input type="checkbox" id="latex-report" checked>
+                                <label for="latex-report"><strong>Plantilla de Informe / Taller</strong></label>
+                            </div>
+                            <div class="checkbox-wrapper simple-check">
+                                <input type="checkbox" id="latex-presentation">
+                                <label for="latex-presentation"><strong>Plantilla de Presentación</strong></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lógica Condicional: Arquitecto de Agentes (Solo si está activo) -->
+                    <div id="architect-section" class="conditional-section">
+                        <h3 class="section-title"
+                            style="font-size: 1.1rem; border-bottom: none; margin-bottom: 0.5rem; padding-bottom: 0;">
+                            Configuración de Orquestador de Loops</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="architect-loop-pattern">Patrón de Loop Activo</label>
+                                <select id="architect-loop-pattern">
+                                    <option value="Directo">Desactivado (Conversación Directa)</option>
+                                    <option value="ReAct">ReAct (Pensamiento -> Acción -> Observación)</option>
+                                    <option value="Plan-and-Execute">Plan-and-Execute (Planificar -> Ejecutar ->
+                                        Refinar)</option>
+                                    <option value="Supervisor-Evaluador">Supervisor + Evaluador (Garantía de Calidad
+                                        Iterativa)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lógica Condicional: Modelos (Solo si el agente de modelado está activo) -->
+                    <div id="modelado-section" class="conditional-section">
+                        <div class="form-group">
+                            <label for="modelado-models">Modelos Específicos a Utilizar</label>
+                            <input type="text" id="modelado-models"
+                                placeholder="Ej: XGBoost, Random Forest (separados por coma)"
+                                value="XGBoost, Random Forest, LightGBM, Redes Neuronales">
+                        </div>
+                        <div class="form-group">
+                            <label>Extensiones del Modelo</label>
+                            <div class="checkbox-grid">
+                                <div class="checkbox-wrapper simple-check">
+                                    <input type="checkbox" id="agent-xai">
+                                    <label for="agent-xai">
+                                        <strong>Agente de Explicabilidad (XAI)</strong>
+                                        <span>SHAP, LIME y relevancia</span>
+                                    </label>
+                                </div>
+                                <div class="checkbox-wrapper simple-check">
+                                    <input type="checkbox" id="agent-mlops">
+                                    <label for="agent-mlops">
+                                        <strong>Agente de MLOps</strong>
+                                        <span>Empaquetado y APIs (Docker)</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lógica Condicional: Optuna (Solo si el agente de modelado está activo) -->
+                    <div id="optuna-section" class="conditional-section">
+                        <div class="checkbox-wrapper simple-check">
+                            <input type="checkbox" id="optuna-active">
+                            <label for="optuna-active"><strong>Activar Optimización con Optuna</strong></label>
+                        </div>
+                        <div id="optuna-fields" class="conditional-fields">
+                            <div class="form-group">
+                                <label for="optuna-details">Modelos Específicos y Lógica de Optimización</label>
+                                <textarea id="optuna-details" rows="2"
+                                    placeholder="Especifica los modelos (ej: XGBoost, Random Forest) y la métrica objetivo (ej: RMSE, accuracy, CV folds) a optimizar..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+                    <!-- Fila 5: Botones de Acción -->
+                    <div class="button-group">
+                        <button type="button" id="btn-generate" class="btn btn-secondary">Generar Prompt</button>
+                        <button type="submit" id="btn-create" class="btn btn-primary">Crear Proyecto en PC</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Columna Derecha: Output y Prompt -->
+            <section class="card glass-card output-section animate-slide-up-delayed">
+                <h2 class="section-title">Resultado y Prompt Maestro</h2>
+
+                <!-- Notificación del Sistema -->
+                <div id="status-notification" class="notification info">
+                    <p>Completa el formulario y genera el prompt o crea la carpeta de proyecto.</p>
+                </div>
+
+                <div class="prompt-box-wrapper">
+                    <div class="prompt-header">
+                        <span>Prompt de Activación consolidado para la IA:</span>
+                        <button id="btn-copy" class="btn btn-tiny">Copiar</button>
+                    </div>
+                    <pre id="prompt-output"
+                        class="prompt-code">El prompt maestro se visualizará aquí una vez que definas los parámetros de tu proyecto...</pre>
+                </div>
+
+                <div class="explanation-notes">
+                    <h3>¿Cómo usar este prompt?</h3>
+                    <p>Una vez creada la estructura de carpetas de tu nuevo proyecto (mediante el botón *"Crear
+                        Proyecto"*), copia este prompt maestro y envíaselo a la IA para iniciar la conversación. La IA
+                        asumirá inmediatamente todos los roles, habilidades y conocimientos de expertiz almacenados en
+                        tu carpeta `/IA/` de forma nativa.</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="dashboard-footer animate-fade-in">
+        <p>Plantillas y Agentes de IA administradas por <strong>Angel Llanos Herrera</strong></p>
+        <div class="dashboard-footer-links">
+            <a href="https://www.linkedin.com/in/angel-llanos/" target="_blank">LinkedIn</a>
+            <a href="mailto:angel.llanos.herrera@gmail.com">Email</a>
+            <a href="https://github.com/AngelTLH" target="_blank">GitHub</a>
+        </div>
+        <div class="dashboard-footer-donate">
+            <p>¿Te resultó útil? Apoya el proyecto ☕</p>
+            <div class="dashboard-footer-links">
+                <a href="https://ko-fi.com/angelllanos" target="_blank" class="donate-btn donate-kofi">☕ Ko-fi</a>
+                <a href="https://github.com/sponsors/AngelTLH" target="_blank" class="donate-btn donate-github">♥ GitHub
+                    Sponsors</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal de Bienvenida con Guía de 3 Pasos -->
+    <div id="welcome-modal" class="modal-overlay">
+        <div class="modal-container">
+            <h2 class="modal-title">🚀 ¿Cómo usar Agentias?</h2>
+            <div class="modal-steps">
+                <div class="modal-step">
+                    <div class="modal-step-number">1</div>
+                    <div class="modal-step-text">
+                        <strong>Elige y configura tus agentes</strong>
+                        <span>Selecciona los roles de IA y lenguajes en este panel, y haz clic en <em>"Crear
+                                Proyecto"</em> para estructurar el entorno en tu disco local.</span>
+                    </div>
+                </div>
+                <div class="modal-step">
+                    <div class="modal-step-number">2</div>
+                    <div class="modal-step-text">
+                        <strong>Carga el proyecto en tu cliente de IA</strong>
+                        <span>Ingresa a Claude, Antigravity o Codex y abre o arrastra la carpeta del proyecto recién
+                            creado para que lea el sistema de agentes.</span>
+                    </div>
+                </div>
+                <div class="modal-step">
+                    <div class="modal-step-number">3</div>
+                    <div class="modal-step-text">
+                        <strong>Copia, pega el prompt y comienza</strong>
+                        <span>Copia el <em>Prompt Maestro</em> generado en la caja lateral, pégalo en la IA para
+                            inicializar el sistema de agentes y comienza a usar.</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-close-modal" class="modal-btn">¡Entendido, comencemos!</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

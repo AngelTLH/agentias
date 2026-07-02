@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Montaña">
+  <defs>
+    <linearGradient id="surface" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#dceff3" />
+    </linearGradient>
+    <linearGradient id="mountain" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#2f95a3" />
+      <stop offset="100%" stop-color="#142e4c" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#surface)" />
+  <rect x="1" y="1" width="62" height="62" rx="13" fill="none" stroke="#b9dce3" stroke-width="2" />
+  <path d="M7 50l16-24 8 10 10-16 18 30z" fill="url(#mountain)" />
+  <path d="M22 26l6-10 6 9-3 5z" fill="#f4fbfd" opacity="0.92" />
+  <circle cx="47" cy="18" r="4" fill="#2f95a3" opacity="0.9" />
+</svg>

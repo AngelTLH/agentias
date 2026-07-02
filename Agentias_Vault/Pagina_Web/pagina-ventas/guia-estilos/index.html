@@ -1,0 +1,177 @@
+﻿<!doctype html>
+<html lang="es">
+  <head>
+    <!-- Google Tag Manager -->
+    <!-- prettier-ignore -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+    <!-- End Google Tag Manager -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guía de estilos | DataCore Store</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/png" href="../logos/logo_ventas.png" />
+    <link rel="stylesheet" href="../assets/css/styles.css" />
+  </head>
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <!-- prettier-ignore -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <header class="topbar">
+      <div class="container topbar__content">
+        <div class="brand">
+          <span class="brand__logo" aria-hidden="true">
+            <img
+              src="../logos/logo_ventas_slogan.png"
+              alt=""
+              width="282"
+              height="100"
+            />
+          </span>
+        </div>
+        <nav class="nav" aria-label="Navegación principal">
+          <button
+            class="nav__toggle"
+            aria-expanded="false"
+            aria-controls="menu"
+          >
+            <span class="sr-only">Abrir menú</span>
+            ☰
+          </button>
+          <div class="nav__wrap">
+            <ul id="menu" class="nav__list">
+              <li><a class="nav__link" href="../">Inicio</a></li>
+              <li class="nav__item nav__item--has-submenu">
+                <a class="nav__link" href="../funciones/" aria-haspopup="true"
+                  >Metodología</a
+                >
+                <ul class="nav__submenu" aria-label="Subsecciones de Metodología">
+                  <li>
+                    <a
+                      class="nav__submenu-link"
+                      href="../funciones/#que-hacemos"
+                      >Pilares</a
+                    >
+                  </li>
+                  <li>
+                    <a class="nav__submenu-link" href="../funciones/#proceso"
+                      >Ruta de Aprendizaje</a
+                    >
+                  </li>
+                </ul>
+              </li>
+              <li><a class="nav__link" href="../portafolio/">Proyectos Alumnos</a></li>
+              <li class="nav__item nav__item--has-submenu">
+                <a class="nav__link" href="../productos/" aria-haspopup="true"
+                  >Cursos</a
+                >
+                <ul class="nav__submenu" aria-label="Subsecciones de Cursos">
+                  <li>
+                    <a class="nav__submenu-link" href="../productos/producto-1/"
+                      >Estadística y R</a
+                    >
+                  </li>
+                  <li>
+                    <a class="nav__submenu-link" href="../productos/producto-2/"
+                      >Machine Learning</a
+                    >
+                  </li>
+                  <li>
+                    <a class="nav__submenu-link" href="../productos/producto-3/"
+                      >Máster en MLOps</a
+                    >
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <a class="nav__link" href="../quienes-somos/"
+                  >¿Quiénes somos?</a
+                >
+              </li>
+              <li><a class="nav__link" href="../contacto/">Contacto</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="section page-header">
+        <div class="container section__header">
+          <div>
+            <p class="eyebrow">Identidad visual</p>
+            <h1>Variables de color y componentes reutilizables.</h1>
+          </div>
+          <p class="muted">
+            Esta guía resume la paleta clara institucional, tipografías y
+            componentes que usamos en todas las páginas de DataCore Store para
+            transmitir confianza y seriedad.
+          </p>
+        </div>
+      </section>
+
+      <section class="section styleguide">
+        <div>
+          <p class="eyebrow">Paleta</p>
+          <div class="chips">
+            <span class="chip">Primario: #2f95a3</span>
+            <span class="chip">Seriedad: #142e4c</span>
+            <span class="chip">Contraste suave: #dceff3</span>
+            <span class="chip">Panel: #ffffff</span>
+            <span class="chip">Texto: #142e4c</span>
+          </div>
+          <p class="muted">
+            Modo claro único: blanco, seguro, cercano y profesional en todas las
+            páginas.
+          </p>
+        </div>
+        <div>
+          <p class="eyebrow">Componentes</p>
+          <div class="cards">
+            <div class="card">
+              <h3>Botones</h3>
+              <p>Primario, ghost y enlaces con retroalimentación hover.</p>
+            </div>
+            <div class="card">
+              <h3>Tarjetas</h3>
+              <p>Fondos con borde y sombras suaves para agrupar información.</p>
+            </div>
+            <div class="card">
+              <h3>Chips y badges</h3>
+              <p>
+                Ideales para resaltar supuestos, estados o tags de tecnología.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer__content">
+        <p class="muted">© 2026 - Derechos reservados DataCore Academy.</p>
+        <div class="footer__links">
+          <a href="../">Inicio</a>
+          <a href="../funciones/">Metodología</a>
+          <a href="../portafolio/">Proyectos Alumnos</a>
+          <a href="../productos/">Cursos</a>
+          <a href="../quienes-somos/">¿Quiénes somos?</a>
+          <a href="../contacto/">Contacto</a>
+          <a href="../politica-privacidad/">Política de privacidad</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../assets/js/main.js"></script>
+  </body>
+</html>
