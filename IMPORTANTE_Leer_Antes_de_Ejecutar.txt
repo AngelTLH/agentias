@@ -1,0 +1,36 @@
+====================================================================
+ IMPORTANTE: INSTRUCCIONES DE SEGURIDAD (WINDOWS SMARTSCREEN)
+====================================================================
+
+Al descargar este proyecto desde internet (por ejemplo, en un archivo ZIP de GitHub), Windows bloquea temporalmente la ejecución de scripts y archivos por lotes (.bat) por motivos de seguridad.
+
+Si al hacer doble clic en "Iniciar_Agentias.bat" aparece una ventana azul con el mensaje "Windows protegió su PC" (SmartScreen), debes realizar uno de los siguientes pasos para habilitarlo:
+
+OPCIÓN A: Ejecución Directa (Recomendada y rápida)
+--------------------------------------------------
+1. En la ventana azul de advertencia, haz clic en el enlace que dice:
+   "Más información" (o "More info").
+2. Aparecerá un botón abajo que dice:
+   "Ejecutar de todos modos" (o "Run anyway"). Haz clic en él.
+3. El servidor local se iniciará con éxito y abrirá el configurador en tu navegador.
+
+OPCIÓN B: Desbloqueo del Archivo (Permanente para esta carpeta)
+---------------------------------------------------------------
+1. Haz clic derecho sobre el archivo "Iniciar_Agentias.bat" y selecciona "Propiedades".
+2. En la pestaña general, abajo del todo verás una sección de Seguridad con la casilla:
+   [ ] Desbloquear (o "Unblock").
+3. Marca esa casilla y haz clic en "Aceptar" (o "Aplicar").
+4. Ahora podrás hacer doble clic en el archivo para ejecutarlo siempre sin advertencias.
+
+OPCIÓN C: Ejecución por Consola de Comandos (Sin advertencias de Windows)
+--------------------------------------------------------------------------
+Si prefieres no ejecutar archivos por lotes (.bat):
+1. Abre una consola de comandos (CMD o PowerShell) en esta carpeta.
+2. Ejecuta el siguiente comando para iniciar el servidor local en Python:
+   python Agentias_Vault/Dashboard/server.py
+3. Abre tu navegador web y entra en la dirección: http://localhost:3000
+
+====================================================================
+Desarrollado por: Angel Llanos Herrera
+Contacto: angel.llanos.herrera@gmail.com
+====================================================================
