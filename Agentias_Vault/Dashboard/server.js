@@ -27,7 +27,7 @@ const mimeTypes = {
     '.js': 'text/javascript',
     '.json': 'application/json',
     '.png': 'image/png',
-    '.jpg': 'image/jpg',
+    '.jpg': 'image/jpeg',
     '.gif': 'image/gif',
     '.svg': 'image/svg+xml'
 };
@@ -99,28 +99,32 @@ const server = http.createServer((req, res) => {
         req.on('end', () => {
             try {
                 const config = JSON.parse(body);
+                const {
+                    projectName,
+                    targetPath,
                     language,
                     format,
                     selectedLanguages = [],
-                    optunaActive,
-                    optunaDetails,
-                    modeladoModels,
-                    areaName,
-                    areaDetails,
-                    activeAgents,
-                    additionalCoding,
-                    oratoriaActive,
-                    dialogosActive,
-                    dashboardActive,
-                    dashboardType,
-                    copyLaTeXReport,
-                    copyLaTeXPresentation,
-                    videoFormat,
-                    videoStyle,
-                    videoDetails,
-                    ytOratoria,
-                    ytEjemplos,
-                    youtubeDetails
+                    optunaActive = false,
+                    optunaDetails = '',
+                    modeladoModels = '',
+                    areaName = '',
+                    areaDetails = '',
+                    activeAgents = {},
+                    additionalCoding = '',
+                    oratoriaActive = false,
+                    dialogosActive = false,
+                    dashboardActive = false,
+                    dashboardType = 'React',
+                    copyLaTeXReport = false,
+                    copyLaTeXPresentation = false,
+                    loopPattern = 'Directo',
+                    brandVoiceActive = false,
+                    seoOptimizerActive = false,
+                    repurposingActive = false,
+                    contentCalendarActive = false,
+                    docsPresentationsActive = false,
+                    businessSaaSActive = false
                 } = config;
 
                 let actualSelectedLanguages = selectedLanguages;
@@ -128,8 +132,7 @@ const server = http.createServer((req, res) => {
                     actualSelectedLanguages = [{ name: language, format: format }];
                 }
 
-                const videoEditor = false;
-                const youtubeCreator = false;
+                const agentArchitect = activeAgents.architect || false;
 
                 if (!projectName || !targetPath) {
                     res.writeHead(400, { 'Content-Type': 'application/json' });
@@ -137,7 +140,7 @@ const server = http.createServer((req, res) => {
                     return;
                 }
 
-                // Resolver la ruta destino completa (ej: C:\Proyectos\Mi_Proyecto)
+                // Resolver la ruta destino completa
                 const fullProjectPath = path.join(targetPath, projectName);
 
                 const copyFile = (srcRel, dstRel) => {
@@ -152,8 +155,7 @@ const server = http.createServer((req, res) => {
                     return;
                 }
 
-                // 1. Crear estructura básica
-                fs.mkdirSync(fullProjectPath, { recursive: true });
+                // 1. Crear estructura básica de carpetas
                 fs.mkdirSync(path.join(fullProjectPath, 'IA', 'agentes'), { recursive: true });
                 fs.mkdirSync(path.join(fullProjectPath, 'IA', 'habilidades'), { recursive: true });
                 fs.mkdirSync(path.join(fullProjectPath, 'IA', 'expertices'), { recursive: true });
@@ -164,13 +166,6 @@ const server = http.createServer((req, res) => {
                 if (activeAgents.research) {
                     fs.mkdirSync(path.join(fullProjectPath, 'Documentacion', 'Documento_Literatura'), { recursive: true });
                 }
-                if (videoEditor) {
-                    fs.mkdirSync(path.join(fullProjectPath, 'Codigos', 'Videos', 'Recursos'), { recursive: true });
-                    fs.mkdirSync(path.join(fullProjectPath, 'Codigos', 'Videos', 'Exportados'), { recursive: true });
-                }
-                if (youtubeCreator) {
-                    fs.mkdirSync(path.join(fullProjectPath, 'IA', 'expertices', 'dialogos_consolidados'), { recursive: true });
-                }
 
                 // Crear bitácora inicial
                 let bitacoraContent = `# Bitácora de Proyecto: ${projectName}\n\n`;
@@ -178,98 +173,97 @@ const server = http.createServer((req, res) => {
                 bitacoraContent += "## 1. Estado Actual del Proyecto\n";
                 bitacoraContent += "- **Última actualización:** (Proyecto inicializado)\n";
                 bitacoraContent += "- **Agente Activo:** Ninguno (Inicialización del sistema)\n";
-                const langStr = actualSelectedLanguages.map(l => `${l.name} (${l.format})`).join(', ') || 'No especificado';
-                bitacoraContent += `- **Lenguaje Principal:** ${langStr}\n`;
+                const langDesc = actualSelectedLanguages.map(l => `${l.name} (${l.format})`).join(', ') || 'No especificado';
+                bitacoraContent += `- **Lenguaje Principal:** ${langDesc}\n`;
                 bitacoraContent += "\n## 2. Decisiones Técnicas y Supuestos\n";
                 bitacoraContent += "- Creación inicial de la estructura del proyecto y copia de agentes/habilidades base.\n";
                 bitacoraContent += "\n## 3. Registro Histórico de Actividades\n";
                 bitacoraContent += "| Fecha y Hora | Agente / Rol | Actividad Detallada | Entregables / Cambios Producidos |\n";
                 bitacoraContent += "| :--- | :--- | :--- | :--- |\n";
-                bitacoraContent += "| 2026-06-16 | Sistema | Inicialización del entorno del proyecto | Creación de directorios y copias de configuración |\n";
+                bitacoraContent += "| 2026-09-18 | Sistema | Inicialización del entorno del proyecto | Creación de directorios y copias de configuración |\n";
                 bitacoraContent += "\n## 4. Tareas Pendientes e Hitos del Proyecto\n";
                 bitacoraContent += "- [ ] Cargar y validar conjunto de datos inicial.\n";
                 bitacoraContent += "- [ ] Realizar Análisis Exploratorio de Datos (EDA) usando [Estadístico Base].\n";
+                if (agentArchitect) {
+                    bitacoraContent += `- [ ] Configurar y validar orquestación de loops (${loopPattern}) usando [Agente Arquitecto de Agentes].\n`;
+                }
                 if (activeAgents.modelado) {
                     bitacoraContent += "- [ ] Entrenar y optimizar modelos con Optuna, guardando resultados en `metrics.xlsx` usando [Agente de Modelado].\n";
+                }
+                if (activeAgents.secops) {
+                    bitacoraContent += "- [ ] Realizar auditoría de seguridad SAST/SCA y sanitización de inputs usando [Agente de Seguridad y SecOps].\n";
+                }
+                if (activeAgents.performance) {
+                    bitacoraContent += "- [ ] Ejecutar profiling de CPU/RAM y vectorizar DataFrames usando [Agente de Optimización de Rendimiento].\n";
+                }
+                if (brandVoiceActive) {
+                    bitacoraContent += "- [ ] Analizar voz de marca y validar coherencia del texto usando el script de Python.\n";
                 }
                 if (activeAgents.latex) {
                     bitacoraContent += "- [ ] Redactar y diagramar informe técnico final en subcarpetas de informes usando [Redactor de LaTeX].\n";
                 }
+                if (docsPresentationsActive) {
+                    bitacoraContent += "- [ ] Redactar informes científicos y diseñar diapositivas premium con alto impacto cognitivo.\n";
+                }
+                if (businessSaaSActive) {
+                    bitacoraContent += "- [ ] Evaluar métricas de negocio (LTV, CAC, Churn) y optimizar embudos de conversión.\n";
+                }
+
                 fs.writeFileSync(path.join(fullProjectPath, 'IA', 'bitacora.md'), bitacoraContent, 'utf-8');
 
-                // 2. Copiar archivos comunes y seleccionados
-                // Habilidad PDF
-                const pdfSkillSrc = path.join(TEMPLATE_DIR, 'IA', 'habilidades', 'lectura_pdf_markitdown.md');
-                const pdfSkillDst = path.join(fullProjectPath, 'IA', 'habilidades', 'lectura_pdf_markitdown.md');
-                if (fs.existsSync(pdfSkillSrc)) {
-                    fs.copyFileSync(pdfSkillSrc, pdfSkillDst);
-                }
+                // 2. Copiar archivos comunes y base
+                copyFile('AGENTS.md', 'AGENTS.md');
+                copyFolderSync(path.join(TEMPLATE_DIR, 'IA', 'bitacoras'), path.join(fullProjectPath, 'IA', 'bitacoras'));
+                copyFile('IA/habilidades/lectura_pdf_markitdown.md', 'IA/habilidades/lectura_pdf_markitdown.md');
+                copyFile('IA/expertices/estilo_escritura.md', 'IA/expertices/estilo_escritura.md');
+                copyFile('IA/habilidades/programacion_general.md', 'IA/habilidades/programacion_general.md');
+                copyFile('IA/agentes/estadistico.md', 'IA/agentes/estadistico.md');
+                copyFile('IA/expertices/expertiz_estadistica.md', 'IA/expertices/expertiz_estadistica.md');
 
-                // Estilo de escritura
-                const styleSrc = path.join(TEMPLATE_DIR, 'IA', 'expertices', 'estilo_escritura.md');
-                const styleDst = path.join(fullProjectPath, 'IA', 'expertices', 'estilo_escritura.md');
-                if (fs.existsSync(styleSrc)) {
-                    fs.copyFileSync(styleSrc, styleDst);
-                }
-
-                // Habilidad de Programación General
-                const generalProgSrc = path.join(TEMPLATE_DIR, 'IA', 'habilidades', 'programacion_general.md');
-                const generalProgDst = path.join(fullProjectPath, 'IA', 'habilidades', 'programacion_general.md');
-                if (fs.existsSync(generalProgSrc)) {
-                    fs.copyFileSync(generalProgSrc, generalProgDst);
-                }
-
-                // Agente Estadístico Base (siempre activo)
-                const statAgentSrc = path.join(TEMPLATE_DIR, 'IA', 'agentes', 'estadistico.md');
-                const statAgentDst = path.join(fullProjectPath, 'IA', 'agentes', 'estadistico.md');
-                if (fs.existsSync(statAgentSrc)) {
-                    fs.copyFileSync(statAgentSrc, statAgentDst);
-                }
-                const statExpSrc = path.join(TEMPLATE_DIR, 'IA', 'expertices', 'expertiz_estadistica.md');
-                const statExpDst = path.join(fullProjectPath, 'IA', 'expertices', 'expertiz_estadistica.md');
-                if (fs.existsSync(statExpSrc)) {
-                    fs.copyFileSync(statExpSrc, statExpDst);
-                }
-
-                // Habilidades de lenguajes seleccionados
-                actualSelectedLanguages.forEach(langItem => {
-                    const langSkillName = `programacion_${langItem.name.toLowerCase()}.md`;
-                    const langSkillSrc = path.join(TEMPLATE_DIR, 'IA', 'habilidades', langSkillName);
-                    const langSkillDst = path.join(fullProjectPath, 'IA', 'habilidades', langSkillName);
-                    if (fs.existsSync(langSkillSrc)) {
-                        fs.copyFileSync(langSkillSrc, langSkillDst);
+                // Agente Especialista en Área de Dominio
+                if (areaName) {
+                    copyFile('IA/agentes/experto_area.md', 'IA/agentes/experto_area.md');
+                    const expertFile = path.join(fullProjectPath, 'IA', 'agentes', 'experto_area.md');
+                    if (fs.existsSync(expertFile)) {
+                        let content = fs.readFileSync(expertFile, 'utf-8');
+                        content = content.replace(/{Area_Dominio}/g, areaName);
+                        content = content.replace(/{Detalles_Aplicacion}/g, areaDetails || 'No especificados');
+                        fs.writeFileSync(expertFile, content, 'utf-8');
                     }
+                    const expertBitacora = path.join(fullProjectPath, 'IA', 'bitacoras', 'bitacora_experto_area.md');
+                    if (fs.existsSync(expertBitacora)) {
+                        let bContent = fs.readFileSync(expertBitacora, 'utf-8');
+                        bContent = bContent.replace(/{Area_Dominio}/g, areaName);
+                        fs.writeFileSync(expertBitacora, bContent, 'utf-8');
+                    }
+                }
+
+                // Copiar habilidades de programación según selección
+                actualSelectedLanguages.forEach(langItem => {
+                    const langSkill = `programacion_${langItem.name.toLowerCase()}.md`;
+                    copyFile(path.join('IA', 'habilidades', langSkill), path.join('IA', 'habilidades', langSkill));
                 });
 
-                // Agente de Modelado
+                // Agente de modelado
                 if (activeAgents.modelado) {
-                    const modAgentSrc = path.join(TEMPLATE_DIR, 'IA', 'agentes', 'modelado.md');
-                    const modAgentDst = path.join(fullProjectPath, 'IA', 'agentes', 'modelado.md');
-                    if (fs.existsSync(modAgentSrc)) {
-                        fs.copyFileSync(modAgentSrc, modAgentDst);
+                    const modeladoSrc = path.join(TEMPLATE_DIR, 'IA', 'agentes', 'modelado.md');
+                    const modeladoDst = path.join(fullProjectPath, 'IA', 'agentes', 'modelado.md');
+                    if (fs.existsSync(modeladoSrc)) {
+                        let content = fs.readFileSync(modeladoSrc, 'utf-8');
+                        if (modeladoModels) {
+                            content = content.replace('XGBoost, Random Forest, LightGBM, Redes Neuronales', modeladoModels);
+                        }
+                        fs.writeFileSync(modeladoDst, content, 'utf-8');
                     }
                     if (optunaActive) {
-                        const optunaSrc = path.join(TEMPLATE_DIR, 'IA', 'habilidades', 'optimizacion_optuna.md');
-                        const optunaDst = path.join(fullProjectPath, 'IA', 'habilidades', 'optimizacion_optuna.md');
-                        if (fs.existsSync(optunaSrc)) {
-                            fs.copyFileSync(optunaSrc, optunaDst);
-                        }
+                        copyFile('IA/habilidades/optimizacion_optuna.md', 'IA/habilidades/optimizacion_optuna.md');
                     }
                 }
 
                 // Agente Redactor LaTeX
                 if (activeAgents.latex) {
-                    const latexAgentSrc = path.join(TEMPLATE_DIR, 'IA', 'agentes', 'redactor_latex.md');
-                    const latexAgentDst = path.join(fullProjectPath, 'IA', 'agentes', 'redactor_latex.md');
-                    if (fs.existsSync(latexAgentSrc)) {
-                        fs.copyFileSync(latexAgentSrc, latexAgentDst);
-                    }
-                    const latexSkillSrc = path.join(TEMPLATE_DIR, 'IA', 'habilidades', 'redaccion_latex.md');
-                    const latexSkillDst = path.join(fullProjectPath, 'IA', 'habilidades', 'redaccion_latex.md');
-                    if (fs.existsSync(latexSkillSrc)) {
-                        fs.copyFileSync(latexSkillSrc, latexSkillDst);
-                    }
-                    // Copiar selectivamente plantillas LaTeX
+                    copyFile('IA/agentes/redactor_latex.md', 'IA/agentes/redactor_latex.md');
+                    copyFile('IA/habilidades/redaccion_latex.md', 'IA/habilidades/redaccion_latex.md');
                     if (copyLaTeXReport) {
                         copyFolderSync(path.join(TEMPLATE_DIR, 'Plantillas_Latex', 'Plantilla_Informe'), path.join(fullProjectPath, 'Plantillas_Latex', 'Plantilla_Informe'));
                     }
@@ -278,82 +272,60 @@ const server = http.createServer((req, res) => {
                     }
                 }
 
-                // Opciones de comunicación y expertises adicionales
                 if (oratoriaActive || activeAgents.latex) {
-                    const oratoriaExpSrc = path.join(TEMPLATE_DIR, 'IA', 'expertices', 'expertiz_oratoria.md');
-                    const oratoriaExpDst = path.join(fullProjectPath, 'IA', 'expertices', 'expertiz_oratoria.md');
-                    if (fs.existsSync(oratoriaExpSrc)) {
-                        fs.copyFileSync(oratoriaExpSrc, oratoriaExpDst);
-                    }
+                    copyFile('IA/expertices/expertiz_oratoria.md', 'IA/expertices/expertiz_oratoria.md');
                 }
-
 
                 // Agente Programador Frontend / Web
                 if (activeAgents.programador) {
-                    const progAgentSrc = path.join(TEMPLATE_DIR, 'IA', 'agentes', 'programador.md');
-                    const progAgentDst = path.join(fullProjectPath, 'IA', 'agentes', 'programador.md');
-                    if (fs.existsSync(progAgentSrc)) {
-                        fs.copyFileSync(progAgentSrc, progAgentDst);
-                    }
-                    const webSkillSrc = path.join(TEMPLATE_DIR, 'IA', 'habilidades', 'desarrollo_web.md');
-                    const webSkillDst = path.join(fullProjectPath, 'IA', 'habilidades', 'desarrollo_web.md');
-                    if (fs.existsSync(webSkillSrc)) {
-                        fs.copyFileSync(webSkillSrc, webSkillDst);
-                    }
-                    const disenoExpSrc = path.join(TEMPLATE_DIR, 'IA', 'expertices', 'expertiz_diseno.md');
-                    const disenoExpDst = path.join(fullProjectPath, 'IA', 'expertices', 'expertiz_diseno.md');
-                    if (fs.existsSync(disenoExpSrc)) {
-                        fs.copyFileSync(disenoExpSrc, disenoExpDst);
-                    }
-                    // Copiar plantillas de Pagina_Web
-                    const webTemplateSrc = path.join(TEMPLATE_DIR, 'Pagina_Web');
-                    const webTemplateDst = path.join(fullProjectPath, 'Pagina_Web');
-                    copyFolderSync(webTemplateSrc, webTemplateDst);
+                    copyFile('IA/agentes/programador.md', 'IA/agentes/programador.md');
+                    copyFile('IA/habilidades/desarrollo_web.md', 'IA/habilidades/desarrollo_web.md');
+                    copyFile('IA/expertices/expertiz_diseno.md', 'IA/expertices/expertiz_diseno.md');
+                    copyFolderSync(path.join(TEMPLATE_DIR, 'Pagina_Web'), path.join(fullProjectPath, 'Pagina_Web'));
                 }
 
-                // Copiar ejemplos de escritura cargados
-                const examplesSrc = path.join(TEMPLATE_DIR, 'Documentacion', 'Ejemplos');
-                const examplesDst = path.join(fullProjectPath, 'Documentacion', 'Ejemplos');
-                copyFolderSync(examplesSrc, examplesDst);
-
-                // Copiar nuevos agentes expertos y habilidades
-
-                if (activeAgents.dataEng) {
-                    copyFile('IA/agentes/data_engineer.md', 'IA/agentes/data_engineer.md');
+                // Agente Diseñador Gráfico y recursos de branding
+                if (activeAgents.disenador) {
+                    copyFile('IA/agentes/disenador.md', 'IA/agentes/disenador.md');
+                    copyFile('IA/habilidades/renderizado_diseno.md', 'IA/habilidades/renderizado_diseno.md');
+                    copyFile('IA/expertices/expertiz_branding.md', 'IA/expertices/expertiz_branding.md');
                 }
-                if (activeAgents.xai) {
-                    copyFile('IA/agentes/xai_expert.md', 'IA/agentes/xai_expert.md');
-                }
+
+                // Copiar ejemplos de escritura
+                copyFolderSync(path.join(TEMPLATE_DIR, 'Documentacion', 'Ejemplos'), path.join(fullProjectPath, 'Documentacion', 'Ejemplos'));
+
+                // Copiar agentes y habilidades adicionales
+                if (activeAgents.dataEng) copyFile('IA/agentes/data_engineer.md', 'IA/agentes/data_engineer.md');
+                if (activeAgents.xai) copyFile('IA/agentes/xai_expert.md', 'IA/agentes/xai_expert.md');
                 if (activeAgents.mlops) {
                     copyFile('IA/agentes/mlops_engineer.md', 'IA/agentes/mlops_engineer.md');
+                    copyFile('IA/habilidades/despliegue_mlops.md', 'IA/habilidades/despliegue_mlops.md');
                 }
-                if (activeAgents.qa) {
-                    copyFile('IA/agentes/qa_reviewer.md', 'IA/agentes/qa_reviewer.md');
-                }
+                if (activeAgents.qa) copyFile('IA/agentes/qa_reviewer.md', 'IA/agentes/qa_reviewer.md');
                 if (activeAgents.research) {
                     copyFile('IA/agentes/investigador.md', 'IA/agentes/investigador.md');
                     copyFile('IA/habilidades/curaduria_literatura.md', 'IA/habilidades/curaduria_literatura.md');
                 }
-                if (activeAgents.simulation) {
-                    copyFile('IA/agentes/simulacion.md', 'IA/agentes/simulacion.md');
+                if (activeAgents.simulation) copyFile('IA/agentes/simulacion.md', 'IA/agentes/simulacion.md');
+                if (activeAgents.gitCicd) copyFile('IA/agentes/git_cicd.md', 'IA/agentes/git_cicd.md');
+                if (activeAgents.privacy) copyFile('IA/agentes/privacidad_datos.md', 'IA/agentes/privacidad_datos.md');
+                if (activeAgents.sustainability) copyFile('IA/agentes/sostenibilidad.md', 'IA/agentes/sostenibilidad.md');
+                if (activeAgents.secops) {
+                    copyFile('IA/agentes/secops_engineer.md', 'IA/agentes/secops_engineer.md');
+                    copyFile('IA/habilidades/seguridad_codigo_secops.md', 'IA/habilidades/seguridad_codigo_secops.md');
                 }
-                if (activeAgents.gitCicd) {
-                    copyFile('IA/agentes/git_cicd.md', 'IA/agentes/git_cicd.md');
-                }
-                if (activeAgents.privacy) {
-                    copyFile('IA/agentes/privacidad_datos.md', 'IA/agentes/privacidad_datos.md');
-                }
-                if (activeAgents.sustainability) {
-                    copyFile('IA/agentes/sostenibilidad.md', 'IA/agentes/sostenibilidad.md');
+                if (activeAgents.performance) {
+                    copyFile('IA/agentes/performance_optimizer.md', 'IA/agentes/performance_optimizer.md');
+                    copyFile('IA/habilidades/optimizacion_rendimiento.md', 'IA/habilidades/optimizacion_rendimiento.md');
                 }
                 if (activeAgents.ia) {
                     copyFile('IA/agentes/ia_expert.md', 'IA/agentes/ia_expert.md');
                     copyFile('IA/habilidades/conexion_api_ia.md', 'IA/habilidades/conexion_api_ia.md');
                 }
-                if (videoEditor) {
-                    copyFile('IA/agentes/editor_video.md', 'IA/agentes/editor_video.md');
-                    copyFile('IA/habilidades/edicion_creacion_video.md', 'IA/habilidades/edicion_creacion_video.md');
-                    copyFile('IA/expertices/expertiz_videos_virales.md', 'IA/expertices/expertiz_videos_virales.md');
+                if (agentArchitect) {
+                    copyFile('IA/agentes/arquitecto_agentes.md', 'IA/agentes/arquitecto_agentes.md');
+                    copyFile('IA/habilidades/orquestacion_agentes.md', 'IA/habilidades/orquestacion_agentes.md');
+                    copyFile('IA/expertices/expertiz_agent_architect.md', 'IA/expertices/expertiz_agent_architect.md');
                 }
 
                 // Configuración de Dashboard
@@ -363,28 +335,14 @@ const server = http.createServer((req, res) => {
                         fs.mkdirSync(dashboardDst, { recursive: true });
                     }
                     if (dashboardType === 'Dash') {
-                        const dashSkillSrc = path.join(TEMPLATE_DIR, 'IA', 'habilidades', 'dashboard_dash.md');
-                        const dashSkillDst = path.join(fullProjectPath, 'IA', 'habilidades', 'dashboard_dash.md');
-                        if (fs.existsSync(dashSkillSrc)) {
-                            fs.copyFileSync(dashSkillSrc, dashSkillDst);
-                        }
+                        copyFile('IA/habilidades/dashboard_dash.md', 'IA/habilidades/dashboard_dash.md');
                         const appPyContent = "import dash\nfrom dash import html, dcc\n\napp = dash.Dash(__name__)\n\napp.layout = html.Div([\n    html.H1('Dashboard en Dash (Python)')\n])\n\nif __name__ == '__main__':\n    app.run_server(debug=True)\n";
                         fs.writeFileSync(path.join(dashboardDst, 'app.py'), appPyContent, 'utf-8');
                     } else if (dashboardType === 'Shiny') {
-                        const shinySkillSrc = path.join(TEMPLATE_DIR, 'IA', 'habilidades', 'dashboard_shiny.md');
-                        const shinySkillDst = path.join(fullProjectPath, 'IA', 'habilidades', 'dashboard_shiny.md');
-                        if (fs.existsSync(shinySkillSrc)) {
-                            fs.copyFileSync(shinySkillSrc, shinySkillDst);
-                        }
-                        // Copiar la plantilla Shiny subida por el usuario
-                        const shinyTemplateSrc = path.join(TEMPLATE_DIR, 'Plantilla_Shiny', 'dashboard');
-                        copyFolderSync(shinyTemplateSrc, dashboardDst);
+                        copyFile('IA/habilidades/dashboard_shiny.md', 'IA/habilidades/dashboard_shiny.md');
+                        copyFolderSync(path.join(TEMPLATE_DIR, 'Plantilla_Shiny', 'dashboard'), dashboardDst);
                     } else if (dashboardType === 'React') {
-                        const reactSkillSrc = path.join(TEMPLATE_DIR, 'IA', 'habilidades', 'dashboard_react.md');
-                        const reactSkillDst = path.join(fullProjectPath, 'IA', 'habilidades', 'dashboard_react.md');
-                        if (fs.existsSync(reactSkillSrc)) {
-                            fs.copyFileSync(reactSkillSrc, reactSkillDst);
-                        }
+                        copyFile('IA/habilidades/dashboard_react.md', 'IA/habilidades/dashboard_react.md');
                         const pkgJson = '{\n  "name": "react-dashboard",\n  "version": "1.0.0",\n  "dependencies": {\n    "react": "^18.2.0",\n    "react-dom": "^18.2.0"\n  }\n}\n';
                         fs.mkdirSync(path.join(dashboardDst, 'src'), { recursive: true });
                         const appJsx = "import React from 'react';\n\nexport default function App() {\n  return <h1>Dashboard en React</h1>;\n}\n";
@@ -393,7 +351,7 @@ const server = http.createServer((req, res) => {
                     }
                 }
 
-                // 3. Crear archivo PRODUCT.md descriptivo del proyecto para contextualizar a la IA
+                // 3. Crear archivo PRODUCT.md descriptivo
                 let productMd = `# Proyecto: ${projectName}\n\n`;
                 productMd += `## Configuración de Entorno y Agentes\n`;
                 const langStr = actualSelectedLanguages.map(l => `${l.name} (${l.format})`).join(', ') || 'No especificado';
@@ -405,6 +363,9 @@ const server = http.createServer((req, res) => {
                     productMd += `* **Área de Expertiz**: ${areaName}\n`;
                     productMd += `  * Detalles: ${areaDetails}\n`;
                 }
+                if (agentArchitect) {
+                    productMd += `* **Orquestación de Loops**: Activo (Patrón: ${loopPattern})\n`;
+                }
                 if (dashboardActive) {
                     productMd += `* **Dashboard**: Activo (${dashboardType})\n`;
                 }
@@ -414,11 +375,23 @@ const server = http.createServer((req, res) => {
                 if (dialogosActive) {
                     productMd += `* **Creación de Diálogos**: Activo (Estilo del Usuario)\n`;
                 }
-                if (videoEditor) {
-                    productMd += `* **Video Creador y Editor**: Activo (${videoFormat} | ${videoStyle})\n`;
+                if (brandVoiceActive) {
+                    productMd += `* **Análisis de Voz (Brand Voice)**: Activo\n`;
                 }
-                if (youtubeCreator) {
-                    productMd += `* **Guionista / Creador YouTube**: Activo\n`;
+                if (seoOptimizerActive) {
+                    productMd += `* **Optimizador SEO**: Activo\n`;
+                }
+                if (repurposingActive) {
+                    productMd += `* **Matriz de Repropósito**: Activa\n`;
+                }
+                if (contentCalendarActive) {
+                    productMd += `* **Calendario Editorial**: Activo\n`;
+                }
+                if (docsPresentationsActive) {
+                    productMd += `* **Documentos y Slides Premium**: Activo\n`;
+                }
+                if (businessSaaSActive) {
+                    productMd += `* **Análisis de Negocio y SaaS**: Activo\n`;
                 }
                 productMd += `\n## Agentes Habilitados en /IA/agentes/\n`;
                 Object.keys(activeAgents).forEach(agent => {
@@ -434,7 +407,7 @@ const server = http.createServer((req, res) => {
 
                 fs.writeFileSync(path.join(fullProjectPath, 'PRODUCT.md'), productMd, 'utf-8');
 
-                // Crear bloc de notas con los datos del autor de las plantillas y agentes
+                // Crear autor.txt
                 const autorContent = "by Angel Llanos Herrera\n\n" +
                     "Mis Redes y Contacto:\n" +
                     "- LinkedIn: https://www.linkedin.com/in/angel-llanos/\n" +
@@ -446,12 +419,7 @@ const server = http.createServer((req, res) => {
                 const hasPython = actualSelectedLanguages.some(l => l.name === 'Python');
                 if (hasPython) {
                     const requirements = ["pandas", "numpy", "matplotlib", "seaborn", "scikit-learn", "statsmodels", "markitdown", "openpyxl"];
-                    if (optunaActive) {
-                        requirements.push("optuna");
-                    }
-                    if (videoEditor) {
-                        requirements.push("moviepy");
-                    }
+                    if (optunaActive) requirements.push("optuna");
                     if (dashboardActive && dashboardType === 'Dash') {
                         requirements.push("dash");
                         requirements.push("plotly");
@@ -459,7 +427,7 @@ const server = http.createServer((req, res) => {
                     fs.writeFileSync(path.join(fullProjectPath, 'requirements.txt'), requirements.join('\n') + '\n', 'utf-8');
                 }
 
-                // 4. Generar el prompt_inicio.txt para que esté disponible en el proyecto
+                // 4. Generar el prompt_inicio.txt
                 let prompt = `Actúa como una IA especializada cargando el entorno del proyecto: "${projectName}".\n`;
                 prompt += `Asume las directrices, habilidades y expertises definidos en la carpeta "/IA/" de este repositorio. No proceses archivos pesados (PDFs, ZIPs) desde cero si ya cuentas con el conocimiento sintetizado en los archivos de la carpeta "/IA/expertices/".\n\n`;
 
@@ -483,18 +451,19 @@ const server = http.createServer((req, res) => {
                 if (additionalCoding) {
                     prompt += `- Directrices de código específicas: ${additionalCoding}\n`;
                 }
-                if (videoEditor) {
-                    prompt += `- Formato/Plataforma de Video: **${videoFormat}**\n`;
-                    prompt += `- Estilo de Edición de Video: **${videoStyle}**\n`;
-                    if (videoDetails) {
-                        prompt += `- Directrices de Video: ${videoDetails}\n`;
-                    }
+                if (agentArchitect) {
+                    prompt += `- Patrón de Loop de Agentes Activo: **${loopPattern}** (Razonamiento estructurado según este patrón).\n`;
                 }
                 prompt += `\n`;
+
                 prompt += `### ROLES Y AGENTES ACTIVOS:\n`;
-                prompt += `1. **Agente Estadístico Base**: Rol por defecto en "/IA/agentes/estadistico.md" apoyado en "/IA/expertices/expertiz_estadistica.md". Liderarás el análisis de datos (EDA), pruebas descriptivas y consistencia estadística.\n`;
-                
-                let agentCount = 2;
+                let agentCount = 1;
+                if (areaName) {
+                    prompt += `${agentCount}. **Agente Especialista en ${areaName}**: Rol en "/IA/agentes/experto_area.md" y bitácora en "/IA/bitacoras/bitacora_experto_area.md". Actúas como máxima autoridad de dominio y negocio para validar variables, restricciones y terminología técnica del sector.\n`;
+                    agentCount++;
+                }
+                prompt += `${agentCount}. **Agente Estadístico Base**: Rol por defecto en "/IA/agentes/estadistico.md" apoyado en "/IA/expertices/expertiz_estadistica.md". Liderarás el análisis de datos (EDA), pruebas descriptivas y consistencia estadística.\n`;
+                agentCount++;
                 if (activeAgents.dataEng) {
                     prompt += `${agentCount}. **Agente de Ingeniería de Datos**: Rol en "/IA/agentes/data_engineer.md". Te encargarás de la ingesta de datos, limpieza de nulos y codificación de variables.\n`;
                     agentCount++;
@@ -563,26 +532,23 @@ const server = http.createServer((req, res) => {
                     agentCount++;
                 }
 
+                if (activeAgents.secops) {
+                    prompt += `${agentCount}. **Agente de Seguridad y SecOps**: Rol en "/IA/agentes/secops_engineer.md" y habilidad en "/IA/habilidades/seguridad_codigo_secops.md". Realizarás auditoría estática de vulnerabilidades (SAST/SCA), sanitización de inputs y prevención de fuga de credenciales o secretos.\n`;
+                    agentCount++;
+                }
+
+                if (activeAgents.performance) {
+                    prompt += `${agentCount}. **Agente de Optimización de Rendimiento**: Rol en "/IA/agentes/performance_optimizer.md" y habilidad en "/IA/habilidades/optimizacion_rendimiento.md". Optimizarás consumo de RAM, vectorización de DataFrames, cuellos de botella con cProfile y aceleración de inferencia con ONNX.\n`;
+                    agentCount++;
+                }
+
                 if (activeAgents.ia) {
                     prompt += `${agentCount}. **Agente Especialista en IA**: Rol en "/IA/agentes/ia_expert.md" apoyado en la habilidad "/IA/habilidades/conexion_api_ia.md". Diseñarás arquitecturas de Deep Learning, NLP, e integrarás agentes de IA mediante APIs (Gemini, ChatGPT) en interfaces web o dashboards conversacionales.\n`;
                     agentCount++;
                 }
 
-                if (videoEditor) {
-                    prompt += `${agentCount}. **Agente Creador y Editor de Videos**: Rol en "/IA/agentes/editor_video.md", habilidades en "/IA/habilidades/edicion_creacion_video.md" y expertiz en "/IA/expertices/expertiz_videos_virales.md". Te encargarás de diseñar el guión/storyboard y automatizar la edición de videos virales en formato **${videoFormat}** con un estilo **${videoStyle}** partiendo de audios pregrabados.\n`;
-                    agentCount++;
-                }
-                if (youtubeCreator) {
-                    prompt += `${agentCount}. **Guionista / Creador YouTube**: Rol en "/IA/agentes/creador_contenido_youtube.md" y habilidad en "/IA/habilidades/creacion_dialogos_youtube.md". Te especializas en la redacción de diálogos y guiones de alto impacto para videos de YouTube.\n`;
-                    if (ytOratoria) {
-                        prompt += "   * **Técnicas de Oratoria**: Activas. Aplicarás los principios de oratoria de impacto de \"/IA/expertices/expertiz_oratoria.md\".\n";
-                    }
-                    if (ytEjemplos) {
-                        prompt += "   * **Ejemplos Consolidados**: Activo. Cargarás e imitarás los guiones depositados en \"/IA/expertices/dialogos_consolidados/\".\n";
-                    }
-                    if (youtubeDetails) {
-                        prompt += `   * **Detalles del Canal/Guión**: ${youtubeDetails}\n`;
-                    }
+                if (agentArchitect) {
+                    prompt += `${agentCount}. **Agente Arquitecto de Agentes**: Rol en "/IA/agentes/arquitecto_agentes.md" apoyado en la habilidad "/IA/habilidades/orquestacion_agentes.md" y el manual "/IA/expertices/expertiz_agent_architect.md". Coordinarás los flujos, loops de agentes y llamadas a herramientas (MCP).\n`;
                     agentCount++;
                 }
 
@@ -590,23 +556,20 @@ const server = http.createServer((req, res) => {
                     prompt += `${agentCount}. **Dashboard (${dashboardType})**: Activo. Guiado por la habilidad en "/IA/habilidades/dashboard_${dashboardType.toLowerCase()}.md". Programarás el dashboard en la carpeta "/Dashboard/".\n`;
                     agentCount++;
                 }
-                prompt += "\n";
+                prompt += `\n`;
 
                 prompt += `### REGLAS DE ACCIÓN MANDATORIAS (SIEMPRE ACTIVAS):\n`;
-                prompt += `1. **Mención Explícita del Agente Activo**: Al emitir cualquier respuesta, código, análisis o reporte, debes declarar explícitamente en el chat el rol o agente de "/IA/agentes/" que estás asumiendo en ese momento (ej: \`[Rol: Estadístico Base]\` o \`[Rol: Agente de Modelado]\`) al inicio de tu mensaje.\n`;
-                prompt += `2. **Generación y Actualización de Bitácora**: Es obligatorio mantener actualizado el archivo "IA/bitacora.md". Al finalizar cada tarea, sesión o cambio en el código, debes documentar el progreso, decisiones tomadas y siguientes pasos (asegurando el uso de mayúsculas donde sea gramaticalmente correcto en títulos, inicios de párrafo y nombres propios).\n`;
-                prompt += `3. **Exportación de Métricas a Excel**: Los resultados de entrenamientos, optimización de hiperparámetros y métricas de modelos de machine learning deben guardarse estrictamente en formato Excel (\`metrics.xlsx\`), nunca en formato JSON.\n`;
-                prompt += `4. **Aislamiento de Informes en Subcarpetas**: Cada informe, reporte o presentación de LaTeX debe estar aislado en una subcarpeta dedicada dentro de "/Documentacion/Informes/" (ej: "/Documentacion/Informes/Reporte_EDA/"), conteniendo todos sus archivos fuentes (.tex), auxiliares e imágenes.\n`;
+                prompt += `1. **Mención Explícita del Agente Activo**: Al emitir cualquier respuesta, código, análisis o reporte, debes declarar explícitamente en el chat el rol o agente de "/IA/agentes/" que estás asumiendo en ese momento (ej: \`[Rol: Estadístico Base]\` o \`[Rol: Redactor de LaTeX]\`) al inicio de tu mensaje.\n`;
+                prompt += `2. **Orquestación y Despacho Multi-Agente ante Consultas Compuestas**: Cuando el usuario solicite tareas complejas o multifacéticas (ej: "modelar datos y hacerme un informe" o "limpiar datos, programar una función y redactar conclusiones"), queda terminantemente prohibido responder como un asistente monolítico genérico. Debes desglosar la respuesta coordinando a los agentes especialistas requeridos:\n`;
+                prompt += `   * **[Rol: Agente de Modelado / Estadístico]**: Define las decisiones analíticas, supuestos, modelos y métricas objetivas.\n`;
+                prompt += `   * **[Rol: Programador]**: Escribe el código limpio, modular y documentado en la carpeta "/Codigos/".\n`;
+                prompt += `   * **[Rol: Redactor de LaTeX]**: Redacta cualquier informe técnico, resumen, interpretación de métricas o conclusiones, clonando estrictamente el estilo del usuario.\n`;
+                prompt += `   * **[Rol: Revisor de QA]**: Valida que no existan errores y confirma el registro en la bitácora.\n`;
+                prompt += `3. **Gestión de Bitácora y Memoria de Continuidad de Sesiones**: Es obligatorio mantener actualizado el archivo "IA/bitacora.md". Al finalizar cada tarea, sesión o cambio en el código, debes documentar el progreso, decisiones tomadas y siguientes pasos (asegurando el uso de mayúsculas donde sea gramaticalmente correcto en títulos, inicios de párrafo y nombres propios). Asimismo, cada vez que el usuario inicie o retome una sesión indicando revisar este prompt ("revisa la carpeta IA prompt_inicio"), debes consultar obligatoriamente "IA/bitacora.md" y el estado de las carpetas ("/Codigos/", "/Documentacion/", "/Datos/") para reconstruir la memoria histórica del proyecto, resumir en qué punto quedó el trabajo y consultar los siguientes pasos pendientes.\n`;
+                prompt += `4. **Exportación de Métricas a Excel**: Los resultados de entrenamientos, optimización de hiperparámetros y métricas de modelos de machine learning deben guardarse estrictamente en formato Excel (\`metrics.xlsx\`), nunca en formato JSON.\n`;
+                prompt += `5. **Aislamiento de Informes en Subcarpetas y Duplicación de Compilados**: Cada informe, reporte o presentación (LaTeX, RMarkdown \`.Rmd\`, Quarto \`.qmd\`, Jupyter Notebooks, etc.) debe contar con su subcarpeta dedicada dentro de "/Documentacion/Informes/<Nombre_Informe>/". Cuando se compile un archivo reproducible generando archivos .pdf o .html, el documento compilado debe guardarse tanto en su carpeta de compilación dentro de "/Codigos/" como copiarse obligatoriamente a su subcarpeta en "/Documentacion/Informes/<Nombre_Informe>/".\n`;
                 
-                let mandatoryCount = 5;
-                if (videoEditor) {
-                    prompt += `${mandatoryCount}. **Edición de Video Basada en Retención**: Los videos generados deben estructurarse con ganchos (*hooks*) de 3 segundos, cortes de ritmo constantes (cada 2 segundos de promedio), superposición de textos de Pillow con safe zones (centro vertical) y mezcla de audio con ganancia equilibrada (voz principal dominante, música a -15dB).\n`;
-                    mandatoryCount++;
-                }
-                if (youtubeCreator) {
-                    prompt += `${mandatoryCount}. **Estructura de Guion YouTube**: Los guiones redactados deben incluir ganchos magnéticos en los primeros 3 segundos, cortes de ritmo narrativo claros, llamadas a la acción (CTA) contextuales y técnicas de oratoria para garantizar la retención de la audiencia.\n`;
-                    mandatoryCount++;
-                }
+                let mandatoryCount = 6;
                 if (activeAgents.research) {
                     prompt += `${mandatoryCount}. **Verificación Bibliográfica Obligatoria**: Toda cita, afirmación o sustento académico incluido en los reportes debe contrastarse activamente con los PDFs reales depositados en "/Documentacion/Documento_Literatura/". Se debe generar de forma obligatoria el archivo Excel \`citas_verificacion.xlsx\` conteniendo las columnas: Cita, Documento Asociado, Número de Página Citada y Autores.\n`;
                     mandatoryCount++;
@@ -614,10 +577,30 @@ const server = http.createServer((req, res) => {
                 
                 prompt += `${mandatoryCount}. **Conversión y Lectura de PDFs con MarkItDown**: Cuando debas leer cualquier archivo PDF en este espacio, debes usar la herramienta 'markitdown' (ejecutando comandos en consola o un script rápido de Python) para pasarlo a formato Markdown ".md" y leer únicamente el archivo ".md" resultante (conforme a "/IA/habilidades/lectura_pdf_markitdown.md").\n`;
                 mandatoryCount++;
-                prompt += `${mandatoryCount}. **Clonación del Estilo de Escritura del Usuario**: Al redactar informes, justificaciones, análisis o conclusiones, debes imitar exactamente el estilo detallado en "/IA/expertices/estilo_escritura.md" (tono formal, riguroso, uso de conectores formales y tercera persona impersonal).\n`;
+                prompt += `${mandatoryCount}. **Prohibición Total y Absoluta de Emojis**: Queda terminantemente prohibido el uso de emojis en cualquier informe, documento, dashboard, presentación, código, comentario o bitácora. Cero emojis en todas las respuestas y entregables.\n`;
                 mandatoryCount++;
-                prompt += `${mandatoryCount}. **Parsimonia en el Código**: En el desarrollo de tus códigos (en "/Codigos/"), mantén estructuras limpias, comentadas y documentadas siguiendo la habilidad "/IA/habilidades/programacion_general.md".\n`;
+                prompt += `${mandatoryCount}. **Uso Correcto de Mayúsculas (Cero Title Case)**: Las mayúsculas se usarán únicamente donde sea gramaticalmente correcto según las normas del español (inicios de oración, nombres propios y siglas). Queda estrictamente prohibido capitalizar cada palabra en títulos o subtítulos (ej: usar "Análisis descriptivo de variables" y jamás "Análisis Descriptivo De Variables").\n`;
                 mandatoryCount++;
+                prompt += `${mandatoryCount}. **Clonación del Estilo de Redacción Basado en Ejemplos**: Todo documento, informe técnico, texto para dashboard o análisis debe redactarse con el tono sobrio, técnico, conciso e impersonal documentado en "/Documentacion/Ejemplos/" y en la guía "/IA/expertices/estilo_escritura.md". El lenguaje debe ser concreto, claro, simple y natural, evitando palabras poco frecuentes, rebuscadas o pomposas.\n`;
+                mandatoryCount++;
+                prompt += `${mandatoryCount}. **Neutralidad de Autoría y Cero Suposición Académica**: Angel Llanos Herrera es el autor y creador del framework Agentias (marca de agua de la plataforma). No obstante, para cualquier informe, código, tarea, script o trabajo que los agentes elaboren para el usuario, queda terminantemente prohibido colocar a Angel Llanos Herrera como autor del documento o entregable. En los documentos generados se debe dejar el campo de autor vacío o con un marcador neutro (ej: \`[Nombre del autor]\`), o bien consultar explícitamente al usuario qué nombre de autor desea colocar. De igual modo, queda estrictamente prohibido que los agentes asuman, inventen o completen nombres de profesores, docentes, evaluadores, universidades o asignaturas basándose en archivos de ejemplo o referencias históricas. En trabajos académicos o profesionales, el agente debe preguntar al usuario el nombre del docente, asignatura o institución, o usar marcadores de posición genéricos.\n`;
+                mandatoryCount++;
+                prompt += `${mandatoryCount}. **Organización Modular y Parsimonia en el Código**: En el desarrollo de tus códigos (en "/Codigos/"), mantén estructuras limpias, modulares y estrictamente organizadas en subcarpetas temáticas (ej: "/Codigos/EDA/", "/Codigos/Modelos/", "/Codigos/Reportes/"), prohibiéndose scripts sueltos en la raíz de "/Codigos/". Sigue la habilidad "/IA/habilidades/programacion_general.md".\n`;
+                mandatoryCount++;
+                prompt += `${mandatoryCount}. **Aprendizaje Continuo y Memoria Técnica por Agente**: Cada agente especialista debe consultar su bitácora técnica correspondiente en "/IA/bitacoras/" antes de ejecutar una tarea (Paso 0) para no repetir errores pasados, y registrar aprendizajes, técnicas validadas y dificultades resueltas al culminar su intervención (Paso 5). El especialista en área de dominio registrará en su bitácora los estándares de negocio transversales.\n`;
+                mandatoryCount++;
+                prompt += `${mandatoryCount}. **Memoria y Respeto de Rutas Personalizadas**: Si el usuario indica una carpeta o ruta personalizada para un proyecto o tarea específica, debes registrarla en "IA/bitacora.md" y recordarla de forma estricta cada vez que se trabaje en ese tema, sin revertir a las rutas predeterminadas a menos que el usuario lo solicite explícitamente.\n`;
+                mandatoryCount++;
+
+                
+                if (activeAgents.secops) {
+                    prompt += `${mandatoryCount}. **Auditoría de Seguridad y Secretos**: Está estrictamente prohibido commitear credenciales o claves API en texto plano; todo input externo o query SQL debe estar parametrizado y sanitizado.\n`;
+                    mandatoryCount++;
+                }
+                if (activeAgents.performance) {
+                    prompt += `${mandatoryCount}. **Optimización de Memoria y CPU**: Prohibido el uso de loops lentos en DataFrames; toda operación debe ser vectorizada o utilizar downcasting de tipos numéricos cuando la memoria supere 500MB.\n`;
+                    mandatoryCount++;
+                }
                 
                 let ruleCount = mandatoryCount;
                 if (oratoriaActive) {
@@ -628,8 +611,50 @@ const server = http.createServer((req, res) => {
                     prompt += `${ruleCount}. **Creación de Diálogos**: Al redactar diálogos, simulaciones, debates o guiones, debes aplicar las reglas de estructuración y roles académicos definidas en "/IA/expertices/expertiz_dialogos.md", reflejando tu estilo formal e impersonal.\n`;
                     ruleCount++;
                 }
-                prompt += `\n`;
-                prompt += `Por favor, confirma que has leído y asimilado este prompt, así como los manuales en la carpeta "/IA/", y dime que estás listo para iniciar el trabajo.`;
+                if (brandVoiceActive) {
+                    prompt += `${ruleCount}. **Clonación y Análisis de Voz**: Analizarás y replicarás de manera consistente la voz de marca utilizando el script de Python en "/IA/herramientas/brand_voice_analyzer.py" y la expertiz en "/IA/expertices/expertiz_brand_voice.md".\n`;
+                    ruleCount++;
+                }
+                if (seoOptimizerActive) {
+                    prompt += `${ruleCount}. **Optimización SEO de Contenido**: Evaluarás y optimizarás la visibilidad y metadatos de tu producción utilizando el script de Python en "/IA/herramientas/seo_optimizer.py" para maximizar la efectividad algorítmica.\n`;
+                    ruleCount++;
+                }
+                if (repurposingActive) {
+                    prompt += `${ruleCount}. **Matriz de Repropósito de Contenido**: Adaptarás y fragmentarás el contenido para múltiples plataformas (Shorts, posts de LinkedIn, hilos de X o blogs) siguiendo el manual en "/IA/expertices/expertiz_content_frameworks.md" y "/IA/expertices/expertiz_social_media.md".\n`;
+                    ruleCount++;
+                }
+                if (contentCalendarActive) {
+                    prompt += `${ruleCount}. **Calendario Editorial Mensual**: Planificarás y distribuirás las publicaciones siguiendo la plantilla y las proporciones equilibradas en "/IA/expertices/expertiz_content_calendar.md".\n`;
+                    ruleCount++;
+                }
+                if (docsPresentationsActive) {
+                    prompt += `${ruleCount}. **Documentación y Presentaciones Premium**: Estructurarás tus informes científicos y tus diapositivas según las directrices de alto impacto cognitivo y diagramación en "/IA/habilidades/documentacion_presentaciones.md" y "/IA/expertices/expertiz_docs_presentations.md".\n`;
+                    ruleCount++;
+                }
+                if (businessSaaSActive) {
+                    prompt += `${ruleCount}. **Análisis de Negocio y SaaS**: Utilizarás el marco de métricas comerciales (LTV, CAC, Churn) y optimización de conversión según "/IA/habilidades/analisis_negocio_saas.md" y "/IA/expertices/expertiz_business_saas.md".\n`;
+                    ruleCount++;
+                }
+                prompt += `### COMANDOS RÁPIDOS DE ACTIVACIÓN (SLASH COMMANDS):\n`;
+                prompt += `- \`/continuar\` o \`/resume\`: Activa inmediatamente el Modo Continuidad de Trabajo (revisa \`IA/bitacora.md\`, \`/IA/bitacoras/\`, \`/Codigos/\`, \`/Datos/\`, \`/Documentacion/\`, saluda bajo el rol correspondiente, resume el estado y pregunta por los pendientes). Es el equivalente directo a "revisa la carpeta IA prompt_inicio".\n`;
+                prompt += `- \`/inicio\` o \`/start\`: Activa el Modo Inicio de Entorno (Día 1).\n`;
+                prompt += `- \`/estado\` o \`/status\`: Presenta un diagnóstico rápido del proyecto, modelos y métricas.\n`;
+                prompt += `- \`/guardar\` o \`/pausa\`: Activa el Protocolo de Guardado y Cierre de Sesión (actualiza \`IA/bitacora.md\`, bitácoras en \`/IA/bitacoras/\`, valida duplicación de compilados y emite reporte listo para \`/continuar\`). Es el equivalente directo a "guarda lo necesario para continuar en otra ocasión".\n`;
+                prompt += `- \`/bitacoras\`: Revisa o audita el historial de aprendizaje técnico en \`/IA/bitacoras/\`.\n`;
+                prompt += `- \`/agentes\`: Muestra el listado de roles y agentes activos.\n\n`;
+                
+                prompt += `### PROTOCOLO DE ACTIVACIÓN Y MEMORIA DE CONTINUIDAD (INICIO Y RETOME DE SESIÓN):\n`;
+                prompt += `Al recibir un comando rápido (ej: \`/continuar\`, \`/resume\`, \`/inicio\`, \`/estado\`, \`/guardar\`) o la instrucción tradicional para revisar este prompt ("revisa la carpeta IA prompt_inicio"), debes ejecutar inmediatamente el siguiente chequeo contextual antes de emitir tu primera respuesta:\n`;
+                prompt += `1. **Inspección Previa de Memoria (\`IA/bitacora.md\`)**: Lee el estado actual, el registro histórico y la sección de tareas pendientes.\n`;
+                prompt += `2. **Inspección de Artefactos**: Revisa qué archivos existen en \`/Codigos/\`, \`/Datos/\`, \`/Documentacion/\` y si existe \`metrics.xlsx\`.\n`;
+                prompt += `3. **Determinación del Modo de Sesión**:\n`;
+                prompt += `   * **Modo Inicio de Entorno (Día 1 / Proyecto Nuevo)**: Si la bitácora solo contiene la inicialización y no hay código desarrollado, confirma la carga del entorno bajo el rol inicial (ej: \`[Rol: Estadístico Base]\`), resume las capacidades del equipo de agentes y propone el plan de arranque para la Fase 1 (ingesta y EDA).\n`;
+                prompt += `   * **Modo Continuidad de Trabajo (Sesión de Retome / Días Posteriores)**: Si la bitácora ya tiene avances o existen archivos creados en sesiones anteriores, **reconstruye la memoria completa del proyecto**. En tu primer mensaje:\n`;
+                prompt += `     a) Declara el rol del agente pertinente (\`[Rol: ...]\`).\n`;
+                prompt += `     b) Presenta un **Breve Resumen de Continuidad**: en qué estado quedó el proyecto, qué decisiones clave se tomaron y qué archivos se generaron en la última sesión.\n`;
+                prompt += `     c) Identifica y lista las **Tareas Pendientes Inmediatas** registradas en la bitácora.\n`;
+                prompt += `     d) Pregunta directamente al usuario si desea continuar con la siguiente tarea pendiente o si prefiere abordar una directiva distinta hoy.\n`;
+                prompt += `4. **Cierre de Sesión y Registro de Hitos (\`/guardar\` o \`/pausa\`)**: Al recibir el comando \`/guardar\` o al culminar la jornada, ejecuta el guardado integral en \`IA/bitacora.md\` y \`/IA/bitacoras/\` para garantizar la continuidad perfecta al reanudar con \`/continuar\`.\n`;
 
                 const promptFinal = prompt.replace(/dashboard_react|dashboard_shiny|dashboard_dash/g, match => match.toLowerCase());
                 fs.writeFileSync(path.join(fullProjectPath, 'IA', 'prompt_inicio.txt'), promptFinal, 'utf-8');

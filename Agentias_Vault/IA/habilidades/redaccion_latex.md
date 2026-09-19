@@ -30,23 +30,23 @@ Cuando se genere código LaTeX para informes técnicos, se deben seguir las espe
   \usepackage{listings} % Formateo de código fuente
   \usepackage{hyperref} % Enlaces interactivos
   ```
-* **Colores Institucionales (UCM)**: Definir siempre los siguientes colores de la plantilla visual:
+* **Colores Institucionales y Corporativos Neutros**: Definir los siguientes colores de la plantilla visual:
   ```latex
-  \definecolor{UCMblue}{RGB}{0, 70, 135}      % Azul oscuro institucional
-  \definecolor{UCMlightblue}{RGB}{235, 245, 255} % Azul claro para fondo de tablas
-  \definecolor{UCMred}{RGB}{150, 40, 50}      % Rojo oscuro para notas importantes
-  \definecolor{UCMlightred}{RGB}{250, 235, 240}  % Rojo claro para fondo de notas
+  \definecolor{PrimaryBlue}{RGB}{20, 60, 110}      % Azul oscuro corporativo neutro
+  \definecolor{LightBlue}{RGB}{240, 245, 252}      % Azul claro para tablas
+  \definecolor{WarningRed}{RGB}{170, 45, 45}       % Rojo oscuro para notas importantes
+  \definecolor{LightRed}{RGB}{253, 240, 240}       % Rojo claro para fondo de notas
   ```
 * **Encabezado y Pie de Página (`fancyhdr`)**:
-  * Encabezado con línea azul y textos de Universidad y Asignatura:
+  * Encabezado con línea y textos genéricos de Institución y Asignatura (nunca asumir nombres fijos):
     ```latex
     \pagestyle{fancy}
     \fancyhf{}
-    \fancyhead[L]{\textcolor{UCMblue}{\textbf{Universidad Católica del Maule}}}
-    \fancyhead[R]{\textcolor{UCMblue}{Trabajo Evaluado N.$^{\circ}$ 2}}
-    \cfoot{\small Pagina \thepage\ de \pageref{LastPage}}
+    \fancyhead[L]{\textcolor{PrimaryBlue}{\textbf{[Nombre de la Institución]}}}
+    \fancyhead[R]{\textcolor{PrimaryBlue}{[Asignatura / Documento Técnico]}}
+    \cfoot{\small Página \thepage\ de \pageref{LastPage}}
     \renewcommand{\headrulewidth}{1pt}
-    \renewcommand{\headrule}{\hbox to\headwidth{\color{UCMblue}\leaders\hrule height \headrulewidth\hfill}}
+    \renewcommand{\headrule}{\hbox to\headwidth{\color{PrimaryBlue}\leaders\hrule height \headrulewidth\hfill}}
     ```
 
 ---
@@ -54,21 +54,21 @@ Cuando se genere código LaTeX para informes técnicos, se deben seguir las espe
 ## 2. Formateo de Componentes del Documento
 
 ### A. Títulos de Secciones
-Las secciones deben teñirse con el color institucional azul:
+Las secciones deben teñirse con el color azul corporativo neutro:
 ```latex
-\titleformat{\section}{\color{UCMblue}\Large\bfseries}{\thesection.}{0.5em}{}
-\titleformat{\subsection}{\color{UCMblue}\large\bfseries}{\thesubsection.}{0.5em}{}
+\titleformat{\section}{\color{PrimaryBlue}\Large\bfseries}{\thesection.}{0.5em}{}
+\titleformat{\subsection}{\color{PrimaryBlue}\large\bfseries}{\thesubsection.}{0.5em}{}
 ```
 
 ### B. Tablas Estructuradas (`tabularx`)
-Las tablas deben tener líneas horizontales gruesas y la cabecera teñida de azul con texto blanco.
+Las tablas deben tener líneas horizontales gruesas y la cabecera teñida con texto blanco.
 ```latex
 \begin{table}[htbp]
 \centering
 \caption{Descripción de las variables del modelo}
 \label{tab:ejemplo}
 \renewcommand{\arraystretch}{1.2}
-\arrayrulecolor{UCMblue}
+\arrayrulecolor{PrimaryBlue}
 \begin{tabularx}{\dimexpr\textwidth-6pt\relax}{@{} l X X @{}}
 \toprule[1.5pt]
 \textbf{Columna 1} & \textbf{Columna 2} & \textbf{Columna X} \\ 
@@ -86,18 +86,18 @@ Definir un estilo limpio para código (ej. R) utilizando los colores del preámb
 ```latex
 \definecolor{CodeBack}{RGB}{248, 248, 248}
 \definecolor{CodeComment}{RGB}{80, 120, 80}
-\definecolor{CodeKeyword}{RGB}{0, 70, 135}
-\definecolor{CodeString}{RGB}{150, 40, 50}
+\definecolor{CodeKeyword}{RGB}{20, 60, 110}
+\definecolor{CodeString}{RGB}{170, 45, 45}
 
 \lstdefinestyle{Rstyle}{
     language=R,
     basicstyle=\ttfamily\footnotesize,
-    keywordstyle=\color{CodeKeyword},
+    keywordstyle=\color{CodeKeyword}\bfseries,
     commentstyle=\color{CodeComment}\itshape,
     stringstyle=\color{CodeString},
     backgroundcolor=\color{CodeBack},
     frame=single,
-    rulecolor=\color{UCMblue},
+    rulecolor=\color{PrimaryBlue},
     breaklines=true,
     showstringspaces=false,
     numbers=left,
@@ -124,3 +124,9 @@ Las figuras deben usar el posicionamiento rígido `[H]` para mantener el flujo e
 * **Aislamiento Obligatorio en Subcarpetas**: Está estrictamente prohibido guardar archivos de informes sueltos en la raíz de `/Documentacion/Informes/`.
 * **Estructuración de Carpetas**: Cada reporte técnico o presentación en LaTeX debe alojarse en su propia subcarpeta exclusiva dentro de `/Documentacion/Informes/` (ej: `/Documentacion/Informes/Reporte_EDA/` o `/Documentacion/Informes/Reporte_Modelamiento/`). 
 * **Archivos Contenidos**: Dentro de cada subcarpeta se deben guardar tanto los códigos fuente (`.tex`), los archivos auxiliares de compilación (`.aux`, `.log`, `.out`, etc.), las imágenes de soporte y el documento compilado final (`.pdf`).
+
+---
+
+## 4. Mandato de Neutralidad de Autoría y Cero Suposición Académica
+* **Autoría del Entregable**: Angel Llanos Herrera es el autor del framework Agentias (marca de agua de la plataforma). Queda terminantemente prohibido colocar su nombre como autor en la portada o metadatos (`\author{...}`) de los documentos o tareas del usuario. El autor debe quedar vacío, con un marcador neutro (`[Nombre del Autor]`) o consultarse directamente al usuario.
+* **Cero Suposición de Profesores o Asignaturas**: Los agentes jamás deben inferir o inventar nombres de docentes, evaluadores, asignaturas o universidades basándose en documentos de ejemplo o referencias previas. Siempre se deben utilizar marcadores de posición neutros (`[Nombre del Docente]`, `[Asignatura]`, `[Nombre de la Institución]`) o consultar explícitamente al usuario.

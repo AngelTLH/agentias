@@ -52,35 +52,42 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    const btnsThemeLight = document.querySelectorAll('.btn-theme-light');
+    const btnsThemeDark = document.querySelectorAll('.btn-theme-dark');
+
     function applyTheme(themeName) {
         const theme = themes[themeName];
+        if (!theme) return;
         const root = document.documentElement;
         Object.keys(theme).forEach(variable => {
             root.style.setProperty(variable, theme[variable]);
         });
         
         if (themeName === 'light') {
-            btnThemeLight.classList.add('active');
-            btnThemeDark.classList.remove('active');
+            btnsThemeLight.forEach(b => b.classList.add('active'));
+            btnsThemeDark.forEach(b => b.classList.remove('active'));
         } else {
-            btnThemeDark.classList.add('active');
-            btnThemeLight.classList.remove('active');
+            btnsThemeDark.forEach(b => b.classList.add('active'));
+            btnsThemeLight.forEach(b => b.classList.remove('active'));
         }
     }
 
-    btnThemeLight.addEventListener('click', () => applyTheme('light'));
-    btnThemeDark.addEventListener('click', () => applyTheme('dark'));
+    btnsThemeLight.forEach(b => b.addEventListener('click', () => applyTheme('light')));
+    btnsThemeDark.forEach(b => b.addEventListener('click', () => applyTheme('dark')));
 
-    // Aplicar light (Cactus Claro) por defecto
-    applyTheme('light');
+    // Aplicar Cactus Oscuro por defecto
+    applyTheme('dark');
 
     const langPythonCheck = document.getElementById('lang-python');
     const langRCheck = document.getElementById('lang-r');
     const langJavaCheck = document.getElementById('lang-java');
+    const langSqlCheck = document.getElementById('lang-sql');
     const formatGroupPython = document.getElementById('format-group-python');
     const formatGroupR = document.getElementById('format-group-r');
+    const formatGroupSql = document.getElementById('format-group-sql');
     const fileFormatPython = document.getElementById('file-format-python');
     const fileFormatR = document.getElementById('file-format-r');
+    const fileFormatSql = document.getElementById('file-format-sql');
     const agentModelCheck = document.getElementById('agent-model');
     const modeladoSection = document.getElementById('modelado-section');
     const optunaSection = document.getElementById('optuna-section');
@@ -119,6 +126,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (langJavaCheck && langJavaCheck.checked) {
             selectedLanguages.push({ name: 'Java', format: '.java' });
         }
+        if (langSqlCheck && langSqlCheck.checked) {
+            selectedLanguages.push({ name: 'SQL', format: fileFormatSql ? fileFormatSql.value : '.sql' });
+        }
         return selectedLanguages;
     }
 
@@ -127,15 +137,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const isPython = langPythonCheck && langPythonCheck.checked;
         const isR = langRCheck && langRCheck.checked;
         const isJava = langJavaCheck && langJavaCheck.checked;
+        const isSql = langSqlCheck && langSqlCheck.checked;
 
         if (formatGroupPython) formatGroupPython.style.display = isPython ? 'block' : 'none';
         if (formatGroupR) formatGroupR.style.display = isR ? 'block' : 'none';
+        if (formatGroupSql) formatGroupSql.style.display = isSql ? 'block' : 'none';
 
-        const checkboxes = [langPythonCheck, langRCheck, langJavaCheck].filter(Boolean);
+        const checkboxes = [langPythonCheck, langRCheck, langJavaCheck, langSqlCheck].filter(Boolean);
         const checkedCount = checkboxes.filter(c => c.checked).length;
         checkboxes.forEach(c => {
             if (!c.checked) {
-                c.disabled = checkedCount >= 2;
+                c.disabled = checkedCount >= 3;
             } else {
                 c.disabled = false;
             }
@@ -159,6 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (langPythonCheck) langPythonCheck.addEventListener('change', updateDynamicFields);
     if (langRCheck) langRCheck.addEventListener('change', updateDynamicFields);
     if (langJavaCheck) langJavaCheck.addEventListener('change', updateDynamicFields);
+    if (langSqlCheck) langSqlCheck.addEventListener('change', updateDynamicFields);
     updateDynamicFields(); // Disparar al cargar
 
     // 2. Mostrar/Ocultar sección de Optuna y Modelado basado en Agente de Modelado
@@ -241,6 +254,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const isGitCicd = document.getElementById('agent-git-cicd').checked;
         const isPrivacy = document.getElementById('agent-privacy').checked;
         const isSustainability = document.getElementById('agent-sustainability').checked;
+        const isSecOps = document.getElementById('agent-secops') ? document.getElementById('agent-secops').checked : false;
+        const isPerformance = document.getElementById('agent-performance') ? document.getElementById('agent-performance').checked : false;
         const isIa = document.getElementById('agent-ia').checked;
         const isVideo = false;
         const isYoutube = false;
@@ -308,9 +323,13 @@ document.addEventListener('DOMContentLoaded', () => {
         prompt += `\n`;
 
         prompt += `### ROLES Y AGENTES ACTIVOS:\n`;
-        prompt += `1. **Agente Estadístico Base**: Rol por defecto en "/IA/agentes/estadistico.md" apoyado en "/IA/expertices/expertiz_estadistica.md". Liderarás el análisis de datos (EDA), pruebas descriptivas y consistencia estadística.\n`;
-        
-        let agentCount = 2;
+        let agentCount = 1;
+        if (areaName) {
+            prompt += `${agentCount}. **Agente Especialista en ${areaName}**: Rol en "/IA/agentes/experto_area.md" y bitácora en "/IA/bitacoras/bitacora_experto_area.md". Actúas como máxima autoridad de dominio y negocio para validar variables, restricciones y terminología técnica del sector.\n`;
+            agentCount++;
+        }
+        prompt += `${agentCount}. **Agente Estadístico Base**: Rol por defecto en "/IA/agentes/estadistico.md" apoyado en "/IA/expertices/expertiz_estadistica.md". Liderarás el análisis de datos (EDA), pruebas descriptivas y consistencia estadística.\n`;
+        agentCount++;
         if (isDataEng) {
             prompt += `${agentCount}. **Agente de Ingeniería de Datos**: Rol en "/IA/agentes/data_engineer.md". Te encargarás de la ingesta de datos, limpieza de nulos y codificación de variables.\n`;
             agentCount++;
@@ -379,6 +398,16 @@ document.addEventListener('DOMContentLoaded', () => {
             agentCount++;
         }
 
+        if (isSecOps) {
+            prompt += `${agentCount}. **Agente de Seguridad y SecOps**: Rol en "/IA/agentes/secops_engineer.md" y habilidad en "/IA/habilidades/seguridad_codigo_secops.md". Realizarás auditoría estática de vulnerabilidades (SAST/SCA), sanitización de inputs y prevención de fuga de credenciales o secretos.\n`;
+            agentCount++;
+        }
+
+        if (isPerformance) {
+            prompt += `${agentCount}. **Agente de Optimización de Rendimiento**: Rol en "/IA/agentes/performance_optimizer.md" y habilidad en "/IA/habilidades/optimizacion_rendimiento.md". Optimizarás consumo de RAM, vectorización de DataFrames, cuellos de botella con cProfile y aceleración de inferencia con ONNX.\n`;
+            agentCount++;
+        }
+
         if (isIa) {
             prompt += `${agentCount}. **Agente Especialista en IA**: Rol en "/IA/agentes/ia_expert.md" apoyado en "/IA/habilidades/conexion_api_ia.md". Diseñador de arquitecturas de Deep Learning, NLP, e integrarás agentes de IA mediante APIs (Gemini, ChatGPT) en interfaces web o dashboards conversacionales.\n`;
             agentCount++;
@@ -415,12 +444,17 @@ document.addEventListener('DOMContentLoaded', () => {
         prompt += `\n`;
 
         prompt += `### REGLAS DE ACCIÓN MANDATORIAS (SIEMPRE ACTIVAS):\n`;
-        prompt += `1. **Mención Explícita del Agente Activo**: Al emitir cualquier respuesta, código, análisis o reporte, debes declarar explícitamente en el chat el rol o agente de "/IA/agentes/" que estás asumiendo en ese momento (ej: \`[Rol: Estadístico Base]\` o \`[Rol: Agente de Modelado]\`) al inicio de tu mensaje.\n`;
-        prompt += `2. **Generación y Actualización de Bitácora**: Es obligatorio mantener actualizado el archivo "IA/bitacora.md". Al finalizar cada tarea, sesión o cambio en el código, debes documentar el progreso, decisiones tomadas y siguientes pasos (asegurando el uso de mayúsculas donde sea gramaticalmente correcto en títulos, inicios de párrafo y nombres propios).\n`;
-        prompt += `3. **Exportación de Métricas a Excel**: Los resultados de entrenamientos, optimización de hiperparámetros y métricas de modelos de machine learning deben guardarse estrictamente en formato Excel (\`metrics.xlsx\`), nunca en formato JSON.\n`;
-        prompt += `4. **Aislamiento de Informes en Subcarpetas**: Cada informe, reporte o presentación de LaTeX debe estar aislado en una subcarpeta dedicada dentro de "/Documentacion/Informes/" (ej: "/Documentacion/Informes/Reporte_EDA/"), conteniendo todos sus archivos fuentes (.tex), auxiliares e imágenes.\n`;
+        prompt += `1. **Mención Explícita del Agente Activo**: Al emitir cualquier respuesta, código, análisis o reporte, debes declarar explícitamente en el chat el rol o agente de "/IA/agentes/" que estás asumiendo en ese momento (ej: \`[Rol: Estadístico Base]\` o \`[Rol: Redactor de LaTeX]\`) al inicio de tu mensaje.\n`;
+        prompt += `2. **Orquestación y Despacho Multi-Agente ante Consultas Compuestas**: Cuando el usuario solicite tareas complejas o multifacéticas (ej: "modelar datos y hacerme un informe" o "limpiar datos, programar una función y redactar conclusiones"), queda terminantemente prohibido responder como un asistente monolítico genérico. Debes desglosar la respuesta coordinando a los agentes especialistas requeridos:\n`;
+        prompt += `   * **[Rol: Agente de Modelado / Estadístico]**: Define las decisiones analíticas, supuestos, modelos y métricas objetivas.\n`;
+        prompt += `   * **[Rol: Programador]**: Escribe el código limpio, modular y documentado en la carpeta "/Codigos/".\n`;
+        prompt += `   * **[Rol: Redactor de LaTeX]**: Redacta cualquier informe técnico, resumen, interpretación de métricas o conclusiones, clonando estrictamente el estilo del usuario.\n`;
+        prompt += `   * **[Rol: Revisor de QA]**: Valida que no existan errores y confirma el registro en la bitácora.\n`;
+        prompt += `3. **Gestión de Bitácora y Memoria de Continuidad de Sesiones**: Es obligatorio mantener actualizado el archivo "IA/bitacora.md". Al finalizar cada tarea, sesión o cambio en el código, debes documentar el progreso, decisiones tomadas y siguientes pasos (asegurando el uso de mayúsculas donde sea gramaticalmente correcto en títulos, inicios de párrafo y nombres propios). Asimismo, cada vez que el usuario inicie o retome una sesión indicando revisar este prompt ("revisa la carpeta IA prompt_inicio"), debes consultar obligatoriamente "IA/bitacora.md" y el estado de las carpetas ("/Codigos/", "/Documentacion/", "/Datos/") para reconstruir la memoria histórica del proyecto, resumir en qué punto quedó el trabajo y consultar los siguientes pasos pendientes.\n`;
+        prompt += `4. **Exportación de Métricas a Excel**: Los resultados de entrenamientos, optimización de hiperparámetros y métricas de modelos de machine learning deben guardarse estrictamente en formato Excel (\`metrics.xlsx\`), nunca en formato JSON.\n`;
+        prompt += `5. **Aislamiento de Informes en Subcarpetas y Duplicación de Compilados**: Cada informe, reporte o presentación (LaTeX, RMarkdown \`.Rmd\`, Quarto \`.qmd\`, Jupyter Notebooks, etc.) debe contar con su subcarpeta dedicada dentro de "/Documentacion/Informes/<Nombre_Informe>/". Cuando se compile un archivo reproducible generando archivos .pdf o .html, el documento compilado debe guardarse tanto en su carpeta de compilación dentro de "/Codigos/" como copiarse obligatoriamente a su subcarpeta en "/Documentacion/Informes/<Nombre_Informe>/".\n`;
         
-        let mandatoryCount = 5;
+        let mandatoryCount = 6;
         if (isVideo) {
             prompt += `${mandatoryCount}. **Edición de Video Basada en Retención**: Los videos generados deben estructurarse con ganchos (*hooks*) de 3 segundos, cortes de ritmo constantes (cada 2 segundos de promedio), superposición de textos de Pillow con safe zones (centro vertical) y mezcla de audio con ganancia equilibrada (voz principal dominante, música a -15dB).\n`;
             mandatoryCount++;
@@ -436,10 +470,30 @@ document.addEventListener('DOMContentLoaded', () => {
         
         prompt += `${mandatoryCount}. **Conversión y Lectura de PDFs con MarkItDown**: Cuando debas leer cualquier archivo PDF en este espacio, debes usar la herramienta 'markitdown' (ejecutando comandos en consola o un script rápido de Python) para pasarlo a formato Markdown ".md" y leer únicamente el archivo ".md" resultante (conforme a "/IA/habilidades/lectura_pdf_markitdown.md").\n`;
         mandatoryCount++;
-        prompt += `${mandatoryCount}. **Clonación del Estilo de Escritura del Usuario**: Al redactar informes, justificaciones, análisis o conclusiones, debes imitar exactamente el estilo detallado en "/IA/expertices/estilo_escritura.md" (tono formal, riguroso, uso de conectores formales y tercera persona impersonal).\n`;
+        prompt += `${mandatoryCount}. **Prohibición Total y Absoluta de Emojis**: Queda terminantemente prohibido el uso de emojis en cualquier informe, documento, dashboard, presentación, código, comentario o bitácora. Cero emojis en todas las respuestas y entregables.\n`;
         mandatoryCount++;
-        prompt += `${mandatoryCount}. **Parsimonia en el Código**: En el desarrollo de tus códigos (en "/Codigos/"), mantén estructuras limpias, comentadas y documentadas siguiendo la habilidad "/IA/habilidades/programacion_general.md".\n`;
+        prompt += `${mandatoryCount}. **Uso Correcto de Mayúsculas (Cero Title Case)**: Las mayúsculas se usarán únicamente donde sea gramaticalmente correcto según las normas del español (inicios de oración, nombres propios y siglas). Queda estrictamente prohibido capitalizar cada palabra en títulos o subtítulos (ej: usar "Análisis descriptivo de variables" y jamás "Análisis Descriptivo De Variables").\n`;
         mandatoryCount++;
+        prompt += `${mandatoryCount}. **Clonación del Estilo de Redacción Basado en Ejemplos**: Todo documento, informe técnico, texto para dashboard o análisis debe redactarse con el tono sobrio, técnico, conciso e impersonal documentado en "/Documentacion/Ejemplos/" y en la guía "/IA/expertices/estilo_escritura.md". El lenguaje debe ser concreto, claro, simple y natural, evitando palabras poco frecuentes, rebuscadas o pomposas.\n`;
+        mandatoryCount++;
+        prompt += `${mandatoryCount}. **Neutralidad de Autoría y Cero Suposición Académica**: Angel Llanos Herrera es el autor y creador del framework Agentias (marca de agua de la plataforma). No obstante, para cualquier informe, código, tarea, script o trabajo que los agentes elaboren para el usuario, queda terminantemente prohibido colocar a Angel Llanos Herrera como autor del documento o entregable. En los documentos generados se debe dejar el campo de autor vacío o con un marcador neutro (ej: \`[Nombre del autor]\`), o bien consultar explícitamente al usuario qué nombre de autor desea colocar. De igual modo, queda estrictamente prohibido que los agentes asuman, inventen o completen nombres de profesores, docentes, evaluadores, universidades o asignaturas basándose en archivos de ejemplo o referencias históricas. En trabajos académicos o profesionales, el agente debe preguntar al usuario el nombre del docente, asignatura o institución, o usar marcadores de posición genéricos.\n`;
+        mandatoryCount++;
+        prompt += `${mandatoryCount}. **Organización Modular y Parsimonia en el Código**: En el desarrollo de tus códigos (en "/Codigos/"), mantén estructuras limpias, modulares y estrictamente organizadas en subcarpetas temáticas (ej: "/Codigos/EDA/", "/Codigos/Modelos/", "/Codigos/Reportes/"), prohibiéndose scripts sueltos en la raíz de "/Codigos/". Sigue la habilidad "/IA/habilidades/programacion_general.md".\n`;
+        mandatoryCount++;
+        prompt += `${mandatoryCount}. **Aprendizaje Continuo y Memoria Técnica por Agente**: Cada agente especialista debe consultar su bitácora técnica correspondiente en "/IA/bitacoras/" antes de ejecutar una tarea (Paso 0) para no repetir errores pasados, y registrar aprendizajes, técnicas validadas y dificultades resueltas al culminar su intervención (Paso 5). El especialista en área de dominio registrará en su bitácora los estándares de negocio transversales.\n`;
+        mandatoryCount++;
+        prompt += `${mandatoryCount}. **Memoria y Respeto de Rutas Personalizadas**: Si el usuario indica una carpeta o ruta personalizada para un proyecto o tarea específica, debes registrarla en "IA/bitacora.md" y recordarla de forma estricta cada vez que se trabaje en ese tema, sin revertir a las rutas predeterminadas a menos que el usuario lo solicite explícitamente.\n`;
+        mandatoryCount++;
+
+        
+        if (isSecOps) {
+            prompt += `${mandatoryCount}. **Auditoría de Seguridad y Secretos**: Está estrictamente prohibido commitear credenciales o claves API en texto plano; todo input externo o query SQL debe estar parametrizado y sanitizado.\n`;
+            mandatoryCount++;
+        }
+        if (isPerformance) {
+            prompt += `${mandatoryCount}. **Optimización de Memoria y CPU**: Prohibido el uso de loops lentos en DataFrames; toda operación debe ser vectorizada o utilizar downcasting de tipos numéricos cuando la memoria supere 500MB.\n`;
+            mandatoryCount++;
+        }
         
         let ruleCount = mandatoryCount;
         if (isOratoria) {
@@ -476,7 +530,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         prompt += `\n`;
         
-        prompt += `Por favor, confirma que has leído y asimilado este prompt, así como los manuales en la carpeta "/IA/", y dime que estás listo para iniciar el trabajo.`;
+        prompt += `### COMANDOS RÁPIDOS DE ACTIVACIÓN (SLASH COMMANDS):\n`;
+        prompt += `- \`/continuar\` o \`/resume\`: Activa inmediatamente el Modo Continuidad de Trabajo (revisa \`IA/bitacora.md\`, \`/IA/bitacoras/\`, \`/Codigos/\`, \`/Datos/\`, \`/Documentacion/\`, saluda bajo el rol correspondiente, resume el estado y pregunta por los pendientes). Es el equivalente directo a "revisa la carpeta IA prompt_inicio".\n`;
+        prompt += `- \`/inicio\` o \`/start\`: Activa el Modo Inicio de Entorno (Día 1).\n`;
+        prompt += `- \`/estado\` o \`/status\`: Presenta un diagnóstico rápido del proyecto, modelos y métricas.\n`;
+        prompt += `- \`/guardar\` o \`/pausa\`: Activa el Protocolo de Guardado y Cierre de Sesión (actualiza \`IA/bitacora.md\`, bitácoras en \`/IA/bitacoras/\`, valida duplicación de compilados y emite reporte listo para \`/continuar\`). Es el equivalente directo a "guarda lo necesario para continuar en otra ocasión".\n`;
+        prompt += `- \`/bitacoras\`: Revisa o audita el historial de aprendizaje técnico en \`/IA/bitacoras/\`.\n`;
+        prompt += `- \`/agentes\`: Muestra el listado de roles y agentes activos.\n\n`;
+        
+        prompt += `### PROTOCOLO DE ACTIVACIÓN Y MEMORIA DE CONTINUIDAD (INICIO Y RETOME DE SESIÓN):\n`;
+        prompt += `Al recibir un comando rápido (ej: \`/continuar\`, \`/resume\`, \`/inicio\`, \`/estado\`, \`/guardar\`) o la instrucción tradicional para revisar este prompt ("revisa la carpeta IA prompt_inicio"), debes ejecutar inmediatamente el siguiente chequeo contextual antes de emitir tu primera respuesta:\n`;
+        prompt += `1. **Inspección Previa de Memoria (\`IA/bitacora.md\`)**: Lee el estado actual, el registro histórico y la sección de tareas pendientes.\n`;
+        prompt += `2. **Inspección de Artefactos**: Revisa qué archivos existen en \`/Codigos/\`, \`/Datos/\`, \`/Documentacion/\` y si existe \`metrics.xlsx\`.\n`;
+        prompt += `3. **Determinación del Modo de Sesión**:\n`;
+        prompt += `   * **Modo Inicio de Entorno (Día 1 / Proyecto Nuevo)**: Si la bitácora solo contiene la inicialización y no hay código desarrollado, confirma la carga del entorno bajo el rol inicial (ej: \`[Rol: Estadístico Base]\`), resume las capacidades del equipo de agentes y propone el plan de arranque para la Fase 1 (ingesta y EDA).\n`;
+        prompt += `   * **Modo Continuidad de Trabajo (Sesión de Retome / Días Posteriores)**: Si la bitácora ya tiene avances o existen archivos creados en sesiones anteriores, **reconstruye la memoria completa del proyecto**. En tu primer mensaje:\n`;
+        prompt += `     a) Declara el rol del agente pertinente (\`[Rol: ...]\`).\n`;
+        prompt += `     b) Presenta un **Breve Resumen de Continuidad**: en qué estado quedó el proyecto, qué decisiones clave se tomaron y qué archivos se generaron en la última sesión.\n`;
+        prompt += `     c) Identifica y lista las **Tareas Pendientes Inmediatas** registradas en la bitácora.\n`;
+        prompt += `     d) Pregunta directamente al usuario si desea continuar con la siguiente tarea pendiente o si prefiere abordar una directiva distinta hoy.\n`;
+        prompt += `4. **Cierre de Sesión y Registro de Hitos (\`/guardar\` o \`/pausa\`)**: Al recibir el comando \`/guardar\` o al culminar la jornada, ejecuta el guardado integral en \`IA/bitacora.md\` y \`/IA/bitacoras/\` para garantizar la continuidad perfecta al reanudar con \`/continuar\`.\n`;
 
         // Modificador helper para pasar lowercase en JS
         return prompt.replace(/dashboard_react|dashboard_shiny|dashboard_dash/g, match => match.toLowerCase());
@@ -531,6 +604,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const isGitCicd = document.getElementById('agent-git-cicd').checked;
         const isPrivacy = document.getElementById('agent-privacy').checked;
         const isSustainability = document.getElementById('agent-sustainability').checked;
+        const isSecOps = document.getElementById('agent-secops') ? document.getElementById('agent-secops').checked : false;
+        const isPerformance = document.getElementById('agent-performance') ? document.getElementById('agent-performance').checked : false;
         const isIa = document.getElementById('agent-ia').checked;
         const isVideo = false;
         const isYoutube = false;
@@ -590,6 +665,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 gitCicd: isGitCicd,
                 privacy: isPrivacy,
                 sustainability: isSustainability,
+                secops: isSecOps,
+                performance: isPerformance,
                 ia: isIa,
                 videoEditor: isVideo,
                 youtubeCreator: isYoutube,
@@ -653,7 +730,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btnSelectPath.disabled = true;
         
         // Mostrar advertencia sobre posible apertura en segundo plano
-        showNotification('⚠️ Nota: Se está abriendo el selector de carpetas. Si no aparece en primer plano, por favor revisa si la ventana quedó minimizada o detrás del navegador en tu barra de tareas.', 'info');
+        showNotification('Nota: Se está abriendo el selector de carpetas. Si no aparece en primer plano, por favor revisa si la ventana quedó minimizada o detrás del navegador en tu barra de tareas.', 'info');
         
         fetch('http://localhost:3000/api/select-folder')
             .then(response => response.json())
@@ -681,21 +758,56 @@ document.addEventListener('DOMContentLoaded', () => {
         statusNotification.className = `notification ${type}`;
     }
 
-    // --- Modal de Bienvenida ---
+    // --- Sistema de Navegacion entre Vistas (Pantalla Principal y Configurador) ---
+    const viewHero = document.getElementById('view-hero');
+    const viewConfigurator = document.getElementById('view-configurator');
+    const btnEnterConfigurator = document.getElementById('btn-enter-configurator');
+    const btnEnterConfiguratorTop = document.getElementById('btn-enter-configurator-top');
+    const btnBackToHome = document.getElementById('btn-back-to-home');
+
+    function showConfiguratorView() {
+        if (viewHero && viewConfigurator) {
+            viewHero.style.display = 'none';
+            viewConfigurator.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+
+    function showHeroView() {
+        if (viewHero && viewConfigurator) {
+            viewConfigurator.style.display = 'none';
+            viewHero.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+
+    if (btnEnterConfigurator) {
+        btnEnterConfigurator.addEventListener('click', showConfiguratorView);
+    }
+    if (btnEnterConfiguratorTop) {
+        btnEnterConfiguratorTop.addEventListener('click', showConfiguratorView);
+    }
+    if (btnBackToHome) {
+        btnBackToHome.addEventListener('click', showHeroView);
+    }
+
+    // --- Modal de Guia de Uso Rapido (Apertura solo a peticion) ---
     const welcomeModal = document.getElementById('welcome-modal');
     const btnCloseModal = document.getElementById('btn-close-modal');
+    const btnOpenGuide = document.getElementById('btn-open-guide');
 
     if (welcomeModal && btnCloseModal) {
-        // Mostrar modal con un pequeño delay para animación suave
-        setTimeout(() => {
-            welcomeModal.classList.add('active');
-        }, 300);
-
         btnCloseModal.addEventListener('click', () => {
             welcomeModal.classList.remove('active');
         });
 
-        // También cerrar al hacer clic fuera del contenedor
+        if (btnOpenGuide) {
+            btnOpenGuide.addEventListener('click', () => {
+                welcomeModal.classList.add('active');
+            });
+        }
+
+        // Cerrar al hacer clic fuera del contenedor
         welcomeModal.addEventListener('click', (e) => {
             if (e.target === welcomeModal) {
                 welcomeModal.classList.remove('active');

@@ -1,6 +1,6 @@
 # Agentias 🤖💼
 
-> **Entorno modular y orquestador local para inicializar proyectos de Ciencia de Datos, Modelado, Documentación y Desarrollo Web estructurados para Agentes de IA.**
+> **Versión 3.8.7** | **Entorno modular y orquestador local para inicializar proyectos de Ciencia de Datos, Modelado, Documentación y Desarrollo Web estructurados para Agentes de IA.**
 
 ---
 
@@ -12,11 +12,11 @@ Desarrollado por **Angel Llanos Herrera**.
 
 ## 🚀 Características Clave
 
-* 🛠️ **Creación de Proyectos en un Clic**: Interfaz web intuitiva para configurar lenguajes, modelos de machine learning (XGBoost, Random Forest, etc.), optimizadores (Optuna), dashboards, reportes en LaTeX y configuraciones de marca.
-* 👥 **Agentes Especializados Preconfigurados**: Carga directa de perfiles detallados en `/IA/agentes/` para guiar a la IA (Estadístico, Modelado, Ingeniero de Datos, Diseñador Gráfico, Redactor de LaTeX, Experto en Privacidad, entre otros).
+* 🛠️ **Creación de Proyectos en un Clic**: Interfaz web intuitiva para configurar lenguajes, modelos de machine learning (XGBoost, Random Forest, LightGBM), optimizadores (Optuna), dashboards, reportes en LaTeX y configuraciones de marca.
+* 👥 **18 Agentes Especializados Preconfigurados (Estándar UAS)**: Roles autónomos estructurados bajo el Estándar Universal de Agente (UAS), con activación explícita `[Rol: ...]`, postura consultiva previa, SOPs rigurosos y Definición de Terminado (DoD). Incluye agentes modernos de **Seguridad y SecOps** (`secops_engineer.md`) y **Optimización de Rendimiento** (`performance_optimizer.md`).
 * 📋 **Bitácora Automatizada (`bitacora.md`)**: Sistema estructurado para que los agentes registren sus avances, decisiones de diseño y pasos siguientes, facilitando la persistencia de contexto entre sesiones.
 * 📈 **Flujos de Trabajo Científicos y de Negocios**: Estándares de calidad rigurosos (guardado de métricas en Excel, separación de reportes, directrices de oratoria e identidad de marca).
-* 🎛️ **Orquestador Local Ligero**: Servidor integrado en Python que se ejecuta localmente sin necesidad de complejas dependencias externas.
+* 🎛️ **Orquestador Local Ligero (Python y Node.js)**: Servidor dual integrado localmente sin dependencias externas pesadas.
 
 ---
 

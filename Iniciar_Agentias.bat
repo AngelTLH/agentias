@@ -12,7 +12,7 @@ echo    /_/   \_\ \__, ^|  \___^| ^|_^| ^|_^|    \__^|_^| \__,_^| ^|___/
 echo              ^|___/                                          
 echo.
 echo ====================================================================
-echo   Distribucion de Agentias (Version V3.7.0)
+echo   Distribucion de Agentias (Version V3.8.7)
 echo   Desarrollado por: Angel Llanos Herrera
 echo   Para errores o mejoras contactar a: angel.llanos.herrera@gmail.com
 echo ====================================================================

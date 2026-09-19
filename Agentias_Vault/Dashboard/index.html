@@ -22,10 +22,207 @@
     </div>
 
     <main class="dashboard-container">
+        <!-- Vista 1: Pantalla Principal (Centro de Mando Full Screen) -->
+        <div id="view-hero" class="dashboard-view active-view">
+            <section class="hero-overview-panel animate-slide-up">
+                <!-- Barra Superior del Panel -->
+                <div class="hero-top-bar">
+                    <div class="hero-brand">
+                        <span class="hero-brand-symbol">⌬</span>
+                        <span class="hero-brand-name">AGENTIAS</span>
+                        <span class="hero-brand-sep">/</span>
+                        <span class="hero-brand-sub">SISTEMA MULTI-AGENTE UAS</span>
+                    </div>
+                    <div class="hero-top-actions">
+                        <div class="theme-selector-container hero-theme-toggle">
+                            <button type="button" id="btn-theme-light-hero" class="theme-toggle-btn btn-theme-light">Cactus Claro</button>
+                            <button type="button" id="btn-theme-dark-hero" class="theme-toggle-btn btn-theme-dark active">Cactus Oscuro</button>
+                        </div>
+                        <button type="button" id="btn-enter-configurator-top" class="hero-action-btn hero-action-btn-primary">
+                            Configurar agentes &rarr;
+                        </button>
+                        <button type="button" id="btn-open-guide" class="hero-action-btn">
+                            <span class="hero-action-dot"></span>
+                            Guía de uso rápido
+                        </button>
+                        <div class="hero-version-badge">
+                            <span class="pulsing-dot"></span>
+                            v3.8.7 · Sep 2026
+                        </div>
+                    </div>
+                </div>
+
+            <!-- Contenido Principal Dividido -->
+            <div class="hero-main-layout">
+                <!-- Columna Izquierda: Manifiesto y Flujo Paso a Paso -->
+                <div class="hero-manifesto-col">
+                    <div class="hero-tagline">— V3.8.7 · EL SISTEMA OPERATIVO, NO SOLO CONFIGURACIONES</div>
+                    <h1 class="hero-title">El sistema operativo para <span class="hero-accent">entornos y agentes de IA</span>.</h1>
+                    <p class="hero-description">
+                        Habilidades modulares, bitácoras individuales de memoria técnica, aislamiento estricto de informes, duplicación de compilados y despacho multi-agente: una arquitectura completa de ingeniería para producción, no un simple paquete de prompts.
+                    </p>
+
+                    <!-- Compatibilidad de Ejecución -->
+                    <div class="hero-compat-section">
+                        <span class="hero-compat-label">COMPATIBLE CON</span>
+                        <div class="hero-compat-badges">
+                            <span class="compat-badge active">Antigravity IDE</span>
+                            <span class="compat-badge">Claude Code</span>
+                            <span class="compat-badge">Cursor</span>
+                            <span class="compat-badge">Codex</span>
+                            <span class="compat-badge">Gemini CLI</span>
+                            <span class="compat-badge">Zed</span>
+                            <span class="compat-badge">VS Code</span>
+                        </div>
+                    </div>
+
+                    <!-- Flujo Paso a Paso Integrado -->
+                    <div class="hero-steps-section">
+                        <div class="hero-steps-header">
+                            <span class="hero-steps-tag">FLUJO DE TRABAJO</span>
+                            <h3>Cómo inicializar y operar tu proyecto</h3>
+                        </div>
+                        <div class="hero-steps-grid">
+                            <div class="hero-step-card">
+                                <div class="hero-step-badge">01</div>
+                                <div class="hero-step-info">
+                                    <strong>Configura y crea</strong>
+                                    <p>Elige roles, lenguajes y área de dominio en el panel inferior y presiona <em>"Crear Proyecto en PC"</em>.</p>
+                                </div>
+                            </div>
+                            <div class="hero-step-card">
+                                <div class="hero-step-badge">02</div>
+                                <div class="hero-step-info">
+                                    <strong>Carga en tu cliente de IA</strong>
+                                    <p>Abre la carpeta creada en Antigravity, Claude Code, Cursor o Codex para cargar <code>AGENTS.md</code> y <code>/IA/</code>.</p>
+                                </div>
+                            </div>
+                            <div class="hero-step-card">
+                                <div class="hero-step-badge">03</div>
+                                <div class="hero-step-info">
+                                    <strong>Activa y colabora</strong>
+                                    <p>Escribe <code>/inicio</code> (o <code>/continuar</code>) o pega el Prompt Maestro para iniciar la orquestación especializada.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botón de Entrada Principal al Configurador -->
+                    <div class="hero-cta-container">
+                        <button type="button" id="btn-enter-configurator" class="hero-cta-btn">
+                            <span>Comenzar y configurar agentes</span>
+                            <span class="hero-cta-arrow">&rarr;</span>
+                        </button>
+                        <span class="hero-cta-hint">Abre el panel de parámetros, selección de roles y generador del prompt maestro</span>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Catálogo Tecnológico (3 Columnas de la imagen) -->
+                <div class="hero-catalog-col">
+                    <div class="catalog-cards-grid">
+                        <!-- Columna 1: Habilidades -->
+                        <div class="catalog-card">
+                            <div class="catalog-header">
+                                <span class="catalog-indicator-dot dot-amber"></span>
+                                <span class="catalog-title">HABILIDADES</span>
+                                <span class="catalog-badge-count">22</span>
+                            </div>
+                            <div class="catalog-items-list">
+                                <div class="catalog-item">orquestacion-agentes</div>
+                                <div class="catalog-item">redaccion-latex</div>
+                                <div class="catalog-item">programacion-r</div>
+                                <div class="catalog-item">programacion-python</div>
+                                <div class="catalog-item">optimizacion-optuna</div>
+                                <div class="catalog-item">analisis-negocio-saas</div>
+                                <div class="catalog-item">curaduria-literatura</div>
+                                <div class="catalog-item">lectura-pdf-markitdown</div>
+                                <div class="catalog-item">renderizado-diseno</div>
+                                <div class="catalog-item">despliegue-mlops</div>
+                                <div class="catalog-item">seguridad-secops</div>
+                                <div class="catalog-item item-more">+ 11 más</div>
+                            </div>
+                        </div>
+
+                        <!-- Columna 2: Agentes -->
+                        <div class="catalog-card">
+                            <div class="catalog-header">
+                                <span class="catalog-indicator-dot dot-emerald"></span>
+                                <span class="catalog-title">AGENTES</span>
+                                <span class="catalog-badge-count">19</span>
+                            </div>
+                            <div class="catalog-items-list">
+                                <div class="catalog-item item-highlight">arquitecto-agentes</div>
+                                <div class="catalog-item">estadistico-base</div>
+                                <div class="catalog-item">agente-modelado</div>
+                                <div class="catalog-item">programador</div>
+                                <div class="catalog-item">redactor-latex</div>
+                                <div class="catalog-item">qa-reviewer</div>
+                                <div class="catalog-item">experto-area</div>
+                                <div class="catalog-item">data-engineer</div>
+                                <div class="catalog-item">mlops-engineer</div>
+                                <div class="catalog-item">secops-engineer</div>
+                                <div class="catalog-item">performance-optimizer</div>
+                                <div class="catalog-item item-more">+ 8 más</div>
+                            </div>
+                        </div>
+
+                        <!-- Columna 3: Comandos Rápidos -->
+                        <div class="catalog-card">
+                            <div class="catalog-header">
+                                <span class="catalog-indicator-dot dot-copper"></span>
+                                <span class="catalog-title">COMANDOS</span>
+                                <span class="catalog-badge-count">10</span>
+                            </div>
+                            <div class="catalog-items-list">
+                                <div class="catalog-item item-command item-highlight">/continuar</div>
+                                <div class="catalog-item item-command item-highlight">/guardar</div>
+                                <div class="catalog-item item-command">/inicio</div>
+                                <div class="catalog-item item-command">/estado</div>
+                                <div class="catalog-item item-command">/bitacoras</div>
+                                <div class="catalog-item item-command">/agentes</div>
+                                <div class="catalog-item item-command">/pausa</div>
+                                <div class="catalog-item item-command">/resume</div>
+                                <div class="catalog-item item-command">/start</div>
+                                <div class="catalog-item item-command">/status</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Barra Inferior de Telemetría -->
+            <div class="hero-telemetry-bar">
+                <div class="telemetry-left">
+                    <span class="telemetry-item"><strong>41</strong> CAPACIDADES UAS</span>
+                    <span class="telemetry-item"><strong>19</strong> ESPECIALISTAS</span>
+                    <span class="telemetry-item"><strong>MEMORIA</strong> EN BITÁCORA</span>
+                    <span class="telemetry-item"><strong>ENTREGA DUAL</strong> DE COMPILADOS</span>
+                </div>
+                <div class="telemetry-right">
+                    <span class="telemetry-tag">ARQUITECTURA MULTI-AGENTE</span>
+                    <span class="telemetry-tag">ANGEL LLANOS HERRERA</span>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- Fin Vista 1: Pantalla Principal -->
+
+    <!-- Vista 2: Panel de Configuración y Selección de Agentes -->
+    <div id="view-configurator" class="dashboard-view" style="display: none;">
+        <div class="configurator-nav-bar">
+            <button type="button" id="btn-back-to-home" class="btn-back-nav">
+                <span class="back-arrow">&larr;</span> Volver a la pantalla principal
+            </button>
+            <div class="configurator-nav-info">
+                <span class="configurator-nav-badge">PASO 01</span>
+                <span class="configurator-nav-title">Configuración del Entorno y Selección de Especialistas</span>
+            </div>
+        </div>
+
         <header class="dashboard-header animate-fade-in">
             <div class="theme-selector-container">
-                <button type="button" id="btn-theme-light" class="theme-toggle-btn active">Cactus Claro</button>
-                <button type="button" id="btn-theme-dark" class="theme-toggle-btn">Cactus Oscuro</button>
+                <button type="button" id="btn-theme-light-cfg" class="theme-toggle-btn btn-theme-light">Cactus Claro</button>
+                <button type="button" id="btn-theme-dark-cfg" class="theme-toggle-btn btn-theme-dark active">Cactus Oscuro</button>
             </div>
             <div class="dashboard-logo-container">
                 <img src="logo.png" alt="Agentias Logo" class="dashboard-logo">
@@ -75,7 +272,7 @@
                     <div class="form-group">
                         <label
                             style="font-size: 0.95rem; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-secondary);">Lenguajes
-                            de Programación (Elige de 0 a 2)</label>
+                            de Programación (Elige de 0 a 3)</label>
                         <div class="languages-selection-container">
                             <!-- Python -->
                             <div class="lang-selection-item">
@@ -127,6 +324,27 @@
                                         <strong>Java</strong>
                                         <span>Habilitar lenguaje</span>
                                     </label>
+                                </div>
+                            </div>
+
+                            <!-- SQL -->
+                            <div class="lang-selection-item">
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="lang-sql" class="lang-checkbox" value="SQL">
+                                    <label for="lang-sql">
+                                        <strong>SQL</strong>
+                                        <span>Habilitar lenguaje</span>
+                                    </label>
+                                </div>
+                                <div class="lang-format-group" id="format-group-sql"
+                                    style="display: none; margin-top: 0.5rem;">
+                                    <label for="file-format-sql"
+                                        style="font-size: 0.75rem; margin-bottom: 0.25rem; font-weight: 600;">Formato de
+                                        Archivo</label>
+                                    <select id="file-format-sql" class="lang-format-select">
+                                        <option value=".sql">Script / Consulta (.sql)</option>
+                                        <option value=".sqlx">Dataform / Query (.sqlx)</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -253,6 +471,22 @@
                                     <label for="agent-git-cicd">
                                         <strong>Agente de Git y CI/CD</strong>
                                         <span>Control de versiones y DevOps</span>
+                                    </label>
+                                </div>
+                                <!-- Agente de Seguridad y SecOps -->
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="agent-secops">
+                                    <label for="agent-secops">
+                                        <strong>Seguridad y SecOps</strong>
+                                        <span>Auditoría SAST/SCA y sanitización</span>
+                                    </label>
+                                </div>
+                                <!-- Agente de Rendimiento y Profiling -->
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="agent-performance">
+                                    <label for="agent-performance">
+                                        <strong>Optimización y Rendimiento</strong>
+                                        <span>Profiling, memoria y aceleración</span>
                                     </label>
                                 </div>
                                 <!-- Agente de Sostenibilidad -->
@@ -418,52 +652,50 @@
                 </div>
             </section>
         </div>
-    </main>
 
-    <footer class="dashboard-footer animate-fade-in">
-        <p>Plantillas y Agentes de IA administradas por <strong>Angel Llanos Herrera</strong></p>
-        <div class="dashboard-footer-links">
-            <a href="https://www.linkedin.com/in/angel-llanos/" target="_blank">LinkedIn</a>
-            <a href="mailto:angel.llanos.herrera@gmail.com">Email</a>
-            <a href="https://github.com/AngelTLH" target="_blank">GitHub</a>
-        </div>
-        <div class="dashboard-footer-donate">
-            <p>¿Te resultó útil? Apoya el proyecto ☕</p>
+        <footer class="dashboard-footer animate-fade-in">
+            <p>Plantillas y Agentes de IA administradas por <strong>Angel Llanos Herrera</strong></p>
             <div class="dashboard-footer-links">
-                <a href="https://ko-fi.com/angelllanos" target="_blank" class="donate-btn donate-kofi">☕ Ko-fi</a>
-                <a href="https://github.com/sponsors/AngelTLH" target="_blank" class="donate-btn donate-github">♥ GitHub
-                    Sponsors</a>
+                <a href="https://www.linkedin.com/in/angel-llanos/" target="_blank">LinkedIn</a>
+                <a href="mailto:angel.llanos.herrera@gmail.com">Email</a>
+                <a href="https://github.com/AngelTLH" target="_blank">GitHub</a>
             </div>
-        </div>
-    </footer>
+            <div class="dashboard-footer-donate">
+                <p>¿Te resultó útil? Apoya el proyecto</p>
+                <div class="dashboard-footer-links">
+                    <a href="https://ko-fi.com/angelllanos" target="_blank" class="donate-btn donate-kofi">Ko-fi</a>
+                    <a href="https://github.com/sponsors/AngelTLH" target="_blank" class="donate-btn donate-github">GitHub Sponsors</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!-- Fin Vista 2: Panel de Configuración -->
+    </main>
 
     <!-- Modal de Bienvenida con Guía de 3 Pasos -->
     <div id="welcome-modal" class="modal-overlay">
         <div class="modal-container">
-            <h2 class="modal-title">🚀 ¿Cómo usar Agentias?</h2>
+            <h2 class="modal-title">¿Cómo usar Agentias?</h2>
             <div class="modal-steps">
                 <div class="modal-step">
                     <div class="modal-step-number">1</div>
                     <div class="modal-step-text">
                         <strong>Elige y configura tus agentes</strong>
-                        <span>Selecciona los roles de IA y lenguajes en este panel, y haz clic en <em>"Crear
-                                Proyecto"</em> para estructurar el entorno en tu disco local.</span>
+                        <span>Selecciona los roles de IA y lenguajes en este panel, y haz clic en <em>"Crear Proyecto"</em> para estructurar el entorno en tu disco local.</span>
                     </div>
                 </div>
                 <div class="modal-step">
                     <div class="modal-step-number">2</div>
                     <div class="modal-step-text">
                         <strong>Carga el proyecto en tu cliente de IA</strong>
-                        <span>Ingresa a Claude, Antigravity o Codex y abre o arrastra la carpeta del proyecto recién
-                            creado para que lea el sistema de agentes.</span>
+                        <span>Ingresa a Claude, Antigravity o Codex y abre o arrastra la carpeta del proyecto recién creado para que lea el sistema de agentes.</span>
                     </div>
                 </div>
                 <div class="modal-step">
                     <div class="modal-step-number">3</div>
                     <div class="modal-step-text">
                         <strong>Copia, pega el prompt y comienza</strong>
-                        <span>Copia el <em>Prompt Maestro</em> generado en la caja lateral, pégalo en la IA para
-                            inicializar el sistema de agentes y comienza a usar.</span>
+                        <span>Copia el <em>Prompt Maestro</em> generado en la caja lateral, pégalo en la IA para inicializar el sistema de agentes y comienza a usar.</span>
                     </div>
                 </div>
             </div>

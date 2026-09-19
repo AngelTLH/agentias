@@ -1,5 +1,5 @@
 ====================================================================
- IMPORTANTE: INSTRUCCIONES DE SEGURIDAD (WINDOWS SMARTSCREEN)
+ IMPORTANTE: INSTRUCCIONES DE SEGURIDAD (AGENTIAS VERSION 3.8.7)
 ====================================================================
 
 Al descargar este proyecto desde internet (por ejemplo, en un archivo ZIP de GitHub), Windows bloquea temporalmente la ejecución de scripts y archivos por lotes (.bat) por motivos de seguridad.

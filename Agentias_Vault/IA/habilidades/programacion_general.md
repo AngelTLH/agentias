@@ -28,3 +28,18 @@ Esta guía describe los fundamentos lógicos y metodológicos aplicables a cualq
 ## 3. Depuración y Resolución de Errores
 * **Método de Aislamiento**: Ante un fallo o bug, aislar la sección de código problemática, replicar el error mediante un caso de prueba mínimo y verificar los datos en cada etapa intermedia.
 * **Logging Eficiente**: Reemplazar impresiones genéricas en consola (`print`) por un sistema de logging estructurado que categorice los mensajes por niveles de severidad (`DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`).
+
+---
+
+## 4. Organización Física de Archivos, Compilados y Rutas Personalizadas
+* **Estructuración en Subcarpetas dentro de `/Codigos/`**:
+  * Queda estrictamente prohibido guardar scripts o archivos sueltos en la raíz de `/Codigos/`.
+  * Todo código debe alojarse en subcarpetas funcionales según su naturaleza (ej: `/Codigos/EDA/`, `/Codigos/Modelos/`, `/Codigos/Reportes/`, `/Codigos/Limpieza/`, `/Codigos/Tests/`).
+* **Duplicación Obligatoria de Entregables Compilados**:
+  * Cuando un script o documento ejecutable (como `.Rmd`, `.qmd`, `.ipynb`, scripts de visualización) compile documentos finales en PDF (`.pdf`) o HTML (`.html`):
+    * El documento compilado debe mantenerse en la subcarpeta correspondiente dentro de `/Codigos/` junto al código ejecutable para garantizar reproducibilidad técnica.
+    * Debe copiarse obligatoriamente una réplica idéntica a su subcarpeta dedicada en `/Documentacion/Informes/<Nombre_Informe>/`, permitiendo al usuario revisar el entregable final de forma centralizada.
+* **Memoria y Respeto de Rutas Personalizadas**:
+  * Si el usuario solicita guardar archivos en una carpeta específica o no convencional para un módulo de trabajo, el agente debe registrar la ruta en `IA/bitacora.md`.
+  * En todas las interacciones posteriores donde se mencione o se trabaje en dicho módulo, el agente debe emplear de forma prioritaria y obligatoria esa ruta personalizada, sin revertir a las convenciones estándar a menos que se indique lo contrario.
+
